@@ -1,0 +1,6 @@
+media/*
+accounts/__pycache__/*
+events/__pycache__/*
+EventsPortal/__pycache__/*
+.env 
+db.sqlite3
