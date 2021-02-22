@@ -34,7 +34,8 @@ class Profile(models.Model):
                 max_length=1,
                 default='M'
                 )
-        
+        is_profile_complete = models.BooleanField(default=False) 
+        is_signup_complete = models.BooleanField(default=False)
         def __str__(self):
                 return self.alcher_id
         

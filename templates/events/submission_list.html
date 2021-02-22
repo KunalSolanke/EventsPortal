@@ -1,0 +1,21 @@
+{% extends 'base.html'%} {% block title %} EventsPortal | login{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <h1>Submitted</h1>
+        <ul class="list-group">
+            {% for event in upcoming %}
+            <li class="list-group-item">Cras justo odio</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-lg-6">
+        <h1>Submitted</h1>
+        <ul class="list-group">
+            {% for event in submitted %}
+            <li class="list-group-item">Cras justo odio</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

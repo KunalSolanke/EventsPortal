@@ -1,0 +1,41 @@
+{% extends 'base.html'%} {% block title %} EventsPortal | login{% endblock %}
+{% block content %}
+<form method="POST">
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+        <input type="text" id="form1Example1" class="form-control" name='username' />
+        <label class="form-label" for="form1Example1">Username</label>
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="text" id="form1Example11" class="form-control" name='full_name' />
+        <label class="form-label" for="form1Example11">Full Name</label>
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="number" id="form1Example12" class="form-control" name='phone' />
+        <label class="form-label" for="form1Example12">Phone</label>
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="text" id="form1Example13" class="form-control" name='college' />
+        <label class="form-label" for="form1Example13">College</label>
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+        <input type="password" id="form1Example2" class="form-control" name='password' />
+        <label class="form-label" for="form1Example2">Password</label>
+    </div>
+
+    <div class="form-outline mb-4">
+        <input type="password" id="form1Example21" class="form-control" name='confirm_password' />
+        <label class="form-label" for="form1Example22">Confirm Password</label>
+    </div>
+
+    <!-- 2 column grid layout for inline styling -->
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+</form>
+{% endblock %}
