@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from .models import Team,Profile
 from .models import generateAlcherId
+from .mixins import ProfileMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 class Login(View) :
@@ -13,7 +15,7 @@ class Login(View) :
          return render(request,self.template_name)
 
 
-class UserSignupCompleteView(UpdateView) :
+class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
    model = User
    template_name = "accounts/signup_complete.html"
    
@@ -22,21 +24,25 @@ class UserSignupCompleteView(UpdateView) :
 
    def post(self,request,*args,**kwargs) :
         password = request.POST.get("password",None)
-        cnf_password = request.POST.get("confirm_passowrd",None)
+        cnf_password = request.POST.get("confirm_password",None)
         fullName = request.POST.get("full_name",None)
         phone = request.POST.get("phone",None)
         gender = request.POST.get("gender",None)
-
+        college = request.POST.get("college",None)
+        
         user = request.user 
         user.profile.fullname = fullName
         user.phone = phone
-        user.profile.gender = gender
+        user.profile.gender = gender if gender is not None else "M"
         user.set_password(password)
-        user.profile.is_profile_signup_complete = True
+        user.profile.is_signup_complete = True
+        user.profile.is_profile_complete = False
+        user.save()
         user.profile.save()
-        return redirect("/profile")
+        print(user,user.profile)
+        return redirect("/accounts/profile")
 
-class TeamCreateView(View) :
+class TeamCreateView(LoginRequiredMixin,CreateView) :
     model = Team
     template_name ="accounts/team_info.html"
 
@@ -44,20 +50,20 @@ class TeamCreateView(View) :
          return render(request,self.template_name)
     
     def post(self,request,*args,**kwargs) :
-        name = request.POST.get("name",None)
+        name = request.POST.get("team_name",None)
         college = request.POST.get("college",None)
         city = request.POST.get("city",None)
-        info = request.POST.get("city",None)
-
-        team = Team.objects.create(team_name=name,city=city,leader=request.user,info=info)
+        info = request.POST.get("info",None)
+        user=request.user
+        team = Team.objects.create(team_name=name,city=city,leader=request.user,description=info)
         user.profile.is_profile_complete= True
-        user.profile.college = college
+        user.profile.team = team
         user.profile.save()
-        return redirect("/profile")
+        return redirect("/accounts/profile/add_member")
 
 
 
-class ProfileView(View):
+class ProfileView(ProfileMixin,View):
     template_name = "accounts/profile.html"
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
@@ -68,10 +74,10 @@ class ProfileView(View):
     def get(self,request):
          return render(request,self.template_name)
 
-class AddMember(View) :
-    template = "accounts/member.html"
+class AddMember(LoginRequiredMixin,View) :
+    template_name = "accounts/member.html"
     
-    def get(self,requset,*arg,**kwargs):
+    def get(self,request,*arg,**kwargs):
         return render(request,self.template_name)
 
     def post(self,request,*args,**kwargs) :
@@ -85,13 +91,10 @@ class AddMember(View) :
             email = request.POST.get("email",None)
             phone = request.POST.get("phone",None)
             gender = request.POST.get("gender",None)
-            
             user = User.objects.create(username=name,email=email)
             user.profile.phone = phone
             user.profile.is_profile_complete = True
             user.profile.gender = gender
+            user.profile.team = request.user.team
             user.profile.save()
-        return redirect("/team_info")
-
-
-            
+        return redirect("/accounts/profile/add_member")

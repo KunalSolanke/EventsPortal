@@ -114,12 +114,14 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY',"170644113326-o5tvbchsk0de9ovl3o587jochl0hl60t.apps.googleusercontent.com")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET',"NYmcVnBY9ibor7Bp1UK2gGIw")
 
 
 
 SOCIAL_AUTH_URL_NAMESPACE = "accounts:social"
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/accounts/profile'
+
 
 #default email backend, sends mail to console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

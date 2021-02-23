@@ -51,25 +51,27 @@ class Profile(models.Model):
 class Team(models.Model) :
     leader = models.OneToOneField(User,related_name="team",on_delete=models.CASCADE)
     team_name = models.CharField(max_length=255,blank=False,null=False)
-    team_id = models.CharField(max_length=20, unique=True)
+    team_id = models.CharField(max_length=20, unique=True,null=True)
     city = models.CharField(max_length=255,blank=True)
     state = models.CharField(max_length=255,blank=True)
+    description = models.TextField(blank=True)
     
 
 def generateTeamId(name):
 	latTeamID = Team.objects.latest('id').id
-	newTeamID=latUserID+1
+	newTeamID=latTeamID+1
 	name_trim = name.replace(" ","")
 	name_trim = name_trim.replace("'","")
 	name_trim = name_trim[:3].upper()
 	team_id= "ALC-TEAM-"+name_trim+"-"+str(newTeamID)
 	return team_id
 
-@receiver(pre_save,sender=Team)
-def generate_team_id(sender,instance,*args,**kwargs) :
-    if not instance.id :
+@receiver(post_save,sender=Team)
+def generate_team_id(sender,instance,created,*args,**kwargs) :
+    if created:
         team_id = generateTeamId(instance.team_name)
         instance.team_id = team_id
+        instance.save()
 
 @receiver(post_save,sender=User)
 def create_profile(sender,instance,created,*args,**kwargs) :

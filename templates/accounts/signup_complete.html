@@ -1,7 +1,8 @@
 {% extends 'base.html'%} {% block title %} EventsPortal | login{% endblock %}
 {% block content %}
-<form method="POST">
+<form method="POST" action="/accounts/signup/complete/">
     <!-- Email input -->
+    {% csrf_token %}
     <div class="form-outline mb-4">
         <input type="text" id="form1Example1" class="form-control" name='username' />
         <label class="form-label" for="form1Example1">Username</label>

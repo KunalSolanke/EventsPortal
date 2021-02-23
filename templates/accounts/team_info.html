@@ -1,54 +1,38 @@
 {% extends 'base.html'%} {% block title %} EventsPortal | login{% endblock %}
 {% block content %}
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-            role="tab" aria-controls="home" aria-selected="true">Home</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-            role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-    </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <form method="POST">
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-                <input type="text" id="form1Example1" class="form-control" />
-                <label class="form-label" for="form1Example1">Full Name</label>
-            </div>
 
-            <div class="form-outline mb-4">
-                <input type="email" id="form1Example1" class="form-control" />
-                <label class="form-label" for="form1Example1">Email</label>
-            </div>
+<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <form method="POST" action="/accounts/team/create/">
+        <!-- Email input -->
+        {% csrf_token %}
+        <div class="form-outline mb-4">
+            <input type="text" id="form1Example1" class="form-control" name="team_name" />
+            <label class="form-label" for="form1Example1">Team name</label>
+        </div>
 
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-                <input type="number" id="form1Example2" class="form-control" />
-                <label class="form-label" for="form1Example2">Phone</label>
-            </div>
-            <h1>Gender</h1>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                <label class="form-check-label" for="flexRadioDefault1">
-                    Male
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                <label class="form-check-label" for="flexRadioDefault2">
-                    Female
-                </label>
-            </div>
+        <div class="form-outline mb-4">
+            <input type="text" id="form1Example1" class="form-control" name="college" />
+            <label class="form-label" for="form1Example1">College</label>
+        </div>
 
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </form>
-    </div>
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+            <input type="text" id="form1Example2" class="form-control" name="city" />
+            <label class="form-label" for="form1Example2">City</label>
+        </div>
 
-    </div>
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+            <input type="text" id="form1Example2" class="form-control" name="info" />
+            <label class="form-label" for="form1Example2">Info </label>
+        </div>
+
+
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block">Save and add members</button>
+    </form>
+</div>
+
 </div>
 {% endblock %}

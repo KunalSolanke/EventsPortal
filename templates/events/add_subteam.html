@@ -1,0 +1,28 @@
+{% extends 'base.html'%} {% block title %} EventsPortal | login{% endblock %}
+{% block content %}
+<form method="POST" action="{% url 'events:add_subteam' %}">
+    <!-- Email input -->
+    {% csrf_token %}
+    <div class="form-outline mb-4">
+        <input type="text" name="email" id="form1Example1" class="form-control" name="title" />
+        <label class=" form-label" for="form1Example1">Title</label>
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+        <input type="text" name="password" id="form1Example2" class="form-control" name="description" />
+        <label class="form-label" for="form1Example2">Description</label>
+    </div>
+    Add member
+    <select class="form-select form-select-sm" multiple aria-label=".form-select-sm example" name="members">
+
+        {% for member in available_members %}
+        <option value="{{member.id}}">{{member.fullname}}</option>
+        {% endfor %}
+    </select>
+    <!-- 2 column grid layout for inline styling -->
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block">Add team</button>
+</form>
+{% endblock %}
