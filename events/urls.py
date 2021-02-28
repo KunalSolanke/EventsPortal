@@ -5,6 +5,8 @@ from django.urls import path
 from .views import *
 
 app_name="events"
+
+
 urlpatterns = [
     path('register/',view=EventsRegisterListView.as_view(),name="event_list"),
     path('register/<int:pk>',view=EventRegisterView.as_view(),name='register_view'),
