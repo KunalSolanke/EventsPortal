@@ -7,6 +7,7 @@ from .models import Team,Profile
 from .models import generateAlcherId
 from .mixins import ProfileMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.validators import EmailValidator,RegexValidator
 # Create your views here.
 
 class Login(View) :
@@ -29,6 +30,23 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         phone = request.POST.get("phone",None)
         gender = request.POST.get("gender",None)
         college = request.POST.get("college",None)
+        
+        name_validator = RegexValidator("^(?!\s*$).+")
+        phone_validator = RegexValidator('^[0-9]{10}$')
+        try :
+            name_validator(fullName)
+        except Exception as e :
+            errors["fullName_error"]="Name should not be empty"
+        
+        try :
+            name_validator(college)
+        except Exception as e :
+            errors["college_error"]="college name  should not be empty"
+        
+        try :
+            phone_validator(phone)
+        except Exception as e :
+            errors["phone_error"]="Must have 10 digits and only digits from 0 to 9  should not"
         
         user = request.user 
         user.profile.fullname = fullName

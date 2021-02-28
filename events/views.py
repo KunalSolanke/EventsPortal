@@ -69,7 +69,7 @@ class EventsSubmissionListView(ListView) :
         context = super(EventsSubmissionListView,self).get_context_data(**kwargs)
         user = self.request.user
         context["upcoming"] =Event.objects.filter(submission_starts__gte = timezone.now().date(),teams__in=[user.team]).all()
-        context["submitted"] = user.profile.team.subteams.fiter(submission_done=True).all() if user.profile.team is not None else []
+        context["submitted"] = user.profile.team.subteams.filter(submission_done=True).all() if user.profile.team is not None else []
         return context
 
 class EventSubmisionView(DetailView) :

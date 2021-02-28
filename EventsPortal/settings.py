@@ -136,7 +136,7 @@ EMAIL_USE_TLS = True
 '''
 
 
-
+LOGIN_URL = "/accounts/login"
 
 
 SOCIAL_AUTH_PIPELINE = (
