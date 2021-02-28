@@ -14,8 +14,6 @@ def generateAlcherId(fullname):
 	alcher_id= "ALC-"+fullname_trim+"-"+str(newUserID)
 	return alcher_id
 
-
-
 class Profile(models.Model):
         user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
         alcher_id = models.CharField(max_length=20, unique=True)
@@ -44,10 +42,7 @@ class Profile(models.Model):
             if not self.id :
                 alcher_id = generateAlcherId(self.fullname)
                 self.alcher_id = alcher_id 
-            return super(Profile,self).save(*args,**kwargs)
-
-
-            
+            return super(Profile,self).save(*args,**kwargs)            
 
 class Team(models.Model) :
     leader = models.OneToOneField(User,related_name="team",on_delete=models.CASCADE)
