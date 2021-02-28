@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-
+from django.contrib.auth import login
 
 class ProfileMixin(LoginRequiredMixin) :
     login_url="/accounts/login"
