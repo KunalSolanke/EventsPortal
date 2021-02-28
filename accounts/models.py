@@ -36,6 +36,7 @@ class Profile(models.Model):
                 )
         is_profile_complete = models.BooleanField(default=False) 
         is_signup_complete = models.BooleanField(default=False)
+       
         def __str__(self):
                 return self.alcher_id
         
@@ -63,7 +64,7 @@ def generateTeamId(name):
 	name_trim = name.replace(" ","")
 	name_trim = name_trim.replace("'","")
 	name_trim = name_trim[:3].upper()
-	team_id= "ALC-TEAM-"+name_trim+"-"+str(newTeamID)
+	team_id= "TM-"+name_trim+"-"+str(newTeamID)
 	return team_id
 
 @receiver(post_save,sender=Team)

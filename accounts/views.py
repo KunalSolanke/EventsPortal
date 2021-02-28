@@ -29,12 +29,13 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         phone = request.POST.get("phone",None)
         gender = request.POST.get("gender",None)
         college = request.POST.get("college",None)
-        
+        alcher_id = generateAlcherId(fullName)
         user = request.user 
         user.profile.fullname = fullName
         user.phone = phone
         user.profile.gender = gender if gender is not None else "M"
         user.set_password(password)
+        user.alcher_id = alcher_id
         user.profile.is_signup_complete = True
         user.profile.is_profile_complete = False
         user.save()
