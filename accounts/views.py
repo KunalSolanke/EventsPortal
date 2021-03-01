@@ -7,6 +7,7 @@ from .models import Team,Profile,generateAlcherId
 from .mixins import ProfileMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.validators import EmailValidator,RegexValidator
+from django.contrib.auth import update_session_auth_hash
 # Create your views here.
 
 class Login(View) :
@@ -60,6 +61,7 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         user.phone = phone
         user.profile.gender = gender if gender is not None else "M"
         user.set_password(password)
+        update_session_auth_hash(request,user)
         user.alcher_id = alcher_id
         user.profile.is_signup_complete = True
         user.profile.is_profile_complete = False
