@@ -1,38 +1,180 @@
 {% extends 'base.html'%} {% block title %} EventsPortal | login{% endblock %}
 {% block content %}
 
-<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-    <form method="POST" action="/accounts/team/create/">
-        <!-- Email input -->
-        {% csrf_token %}
-        <div class="form-outline mb-4">
-            <input type="text" id="form1Example1" class="form-control" name="team_name" />
-            <label class="form-label" for="form1Example1">Team name</label>
-        </div>
+<div class="container mt-3 text-white rounded-3 px-5 " style="background-color: #272727;">
+    <h3 class="pt-4">Registration</h3>
 
-        <div class="form-outline mb-4">
-            <input type="text" id="form1Example1" class="form-control" name="college" />
-            <label class="form-label" for="form1Example1">College</label>
-        </div>
+    <div class="container mt-5 g-3">
+        <form class="g-3 team__data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="teamName" class="form-label">Team Name</label>
+                    <input type="text" class="form-control" id="teamName" name="team_name">
+                </div>
+            </div>
+            <br>
 
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-            <input type="text" id="form1Example2" class="form-control" name="city" />
-            <label class="form-label" for="form1Example2">City</label>
-        </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="teamLeaderName" class="form-label">Team Leader Name</label>
+                    <input type="text" class="form-control" id="teamLeaderName" value="{{user.profile.fullname}}"
+                        disabled>
+                </div>
+                <div class="col-md-4">
+                    <label for="teamLeaderNumber" class="form-label">Team Leader Phone No.</label>
+                    <input type="text" class="form-control" id="teamLeaderNumber" value="{{user.profile.phone}}"
+                        disabled>
+                </div>
+                <div class="col-md-4">
+                    <label for="teamLeaderMail" class="form-label">Team Leader's Mail ID</label>
+                    <input type="email" class="form-control" id="teamLeaderMail" value="{{user.email}}" disabled>
+                </div>
+            </div>
+            <br />
+            <div class="members__wrapper">
 
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-            <input type="text" id="form1Example2" class="form-control" name="info" />
-            <label class="form-label" for="form1Example2">Info </label>
-        </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-9">
+
+                </div>
+                <div class="col-lg-3 float-end">
+                    <button type="button" class="btn btn-secondary float-end add__member" w-100> <b
+                            style="font-size: 20px;">+</b>
+                        Add
+                        Member</button>
+                </div>
+            </div>
+
+
+            <br>
+            <!-- <form>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="memberName" class="form-label">Member Name</label>
+                        <input type="text" class="form-control" id="memberName">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="memberNumber" class="form-label">Member Phone No.</label>
+                        <input type="text" class="form-control" id="memberNumber">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="memberMail" class="form-label">Member's Mail ID</label>
+                        <input type="email" class="form-control" id="memberMail">
+                    </div>
+                </div>
+            </form> -->
 
 
 
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block">Save and add members</button>
-    </form>
+            <br><br>
+            <center>
+                <button type="submit" class="btn btn-secondary px-5">Register</button>
+            </center>
+
+        </form>
+        <br><br>
+    </div>
 </div>
+{% endblock %}
+{% block script %}
+<script>
+    let members = []
+    let team_member_form = () => {
+        return `<form class="member_form" onsubmit="memberformmsubmit(event)">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="memberName" class="form-label">Member Name</label>
+                        <input type="text" class="form-control" id="memberName" required name="name">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="memberNumber" class="form-label">Member Phone No.</label>
+                        <input type="text" class="form-control" id="memberNumber" required name="phone">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="memberMail" class="form-label">Member's Mail ID</label>
+                        <input type="email" class="form-control" id="memberMail" required name="email">
+                    </div>
+                </div>
+                 <br/>
+                <div class="row">
+                <div class="col-9">
 
-</div>
+                </div>
+               
+                <div class="col-lg-3 float-end">
+                    <button type="submit" class="btn btn-secondary float-end add__member" w-100> <b
+                            style="font-size: 20px;">+</b>
+                        Add
+                        Member</button>
+                </div>
+              </div>
+            </form><br/>`
+    }
+
+
+    let membersDiv = $(".members__wrapper");
+    $(".add__member").click(function (e) {
+        if (members.length == 0) {
+            $(".add__member").hide()
+            membersDiv.append(team_member_form());
+            return;
+        }
+        return;
+    })
+
+
+    function memberformmsubmit(e) {
+        e.preventDefault();
+        console.log("here");
+        let form = new FormData(e.target);
+        let email = form.get("email");
+        let filter = members.filter(e => e.email == email);
+        if (filter.length) {
+            alert("Team member with same email already added")
+            return;
+        }
+        else {
+            members.push({
+                email,
+                name: form.get("name"),
+                phone: form.get("phone")
+            })
+            $(".add__member").hide();
+            membersDiv.append(team_member_form());
+            return;
+        }
+    }
+
+
+
+    $(".team__data").submit(function sendTeamData(e) {
+        console.log("here")
+        e.preventDefault();
+        let form = new FormData(e.target);
+        team_name = form.get("team_name");
+        $.ajax({
+            type: "POST",
+            url: "/accounts/team/create/",
+            contentType: false,
+            cache: false,
+            processData: false,
+            mode: "same-origin",
+            headers: {
+                'X-CSRFToken': $("input[name=csrfmiddlewaretoken]").val(),
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify({
+                members: members,
+                team_name: team_name
+            })
+        })
+    })
+
+
+</script>
+
 {% endblock %}

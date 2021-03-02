@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %} EventsPortal | login
+{% endblock %}
+{% block content %}
+<div class="container-fluid mt-3" style="background-color: black;">
+  <div class="row justify-content-center g-3">
+    <div class="col-lg-8 col-12 col-sm-12 col-md-8 text-white listevents rounded-3">
+
+      <div class="container-fluid">
+        <div class="row justify-content-evenly">
+          <div class="col-6">
+            <p style="font-size: 1.4vw;" class="pt-2">Events</p>
+          </div>
+          <div class="col-6 ms-auto text-end" style="font-size: 1.4vw;" class="pt-2"><a href="#"
+              style="text-decoration: none;">&#10006;</a></div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 eventcard rounded-3">
+            <div class="pt-4 pb-3">
+
+              <div class="container">
+                <div class="row justify-content-evenly">
+                  <div class="col">
+                    <p class="fs-4">Online Multi Talent Solo Competiton</p>
+                  </div>
+                  <div class="col text-end">
+                    <button type="button" class="btn btn-secondary "><a href="#"
+                        class="text-white text-decoration-none">Register Now</a></button>
+                  </div>
+                </div>
+              </div>
+
+              <ul>Rules</ul>
+              <ul type="none">
+                <ul type="solid">
+                  <li>There is no registration fee for this event.</li>
+                  <!-- <li></li> -->
+                  <li>Dancing, singing or Rapping already existing in the form of other events in the fest is not
+                    allowed. You may contact the team in case of any suspicion.</li>
+                  <li>Contest have to perform solo.</li>
+                  <li>Minimum age limit for the competition is 12.</li>
+                  <li>Time limit is 5 minutes.</li>
+                  <li>The video quality and the audio should be clear.</li>
+                  <li>You have to submit the Google Drive Link of the folder which contains video and extracted audio at
+                    www.alcheringa.in/registrations/ with provided access.</li>
+                  <li>Use of instruments or props to enhance your performance is allowed.</li>
+                  <li>Obscenity of any kind or inappropriate content will lead to immediate disqualification.</li>
+                  <li>The decision of the judges will be final and binding in all cases.</li>
+                  <li>Organizers have full authority to disqualify the participation in case of any discrepancy.</li>
+                </ul>
+              </ul>
+
+              <!-- <ul>Judging Criteria</ul>
+                      <ul type="none">
+                        <ol>
+                            <li>Story Telling</li>
+                            <li>Creativity and Originality</li>
+                            <li>Screenplay and Actor's performance.</li>
+                            <li>Technical Execution: Camera / Sound / Light / Editing</li>
+                            <li>Overall Impression</li>
+                        </ol>
+                      </ul> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-12 col-sm-12 col-md-6 text-white registeredevents mx-3 rounded-3">
+      <p class="fs-2 pt-2 text-center">Registered Events
+      <div class="row px-3">
+        {% for event in registered_events %}
+        <div class="col-12 registeredevent fs-4 my-2 py-2 rounded-3 class=" fs-4"">
+          {{event.title}}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

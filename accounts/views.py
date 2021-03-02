@@ -8,6 +8,7 @@ from .mixins import ProfileMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.validators import EmailValidator,RegexValidator
 from django.contrib.auth import update_session_auth_hash
+from events.views import get_registered_events
 # Create your views here.
 
 class Login(View) :
@@ -78,6 +79,7 @@ class TeamCreateView(LoginRequiredMixin,CreateView) :
          return render(request,self.template_name)
     
     def post(self,request,*args,**kwargs) :
+        print(request.POST)
         name = request.POST.get("team_name",None)
         college = request.POST.get("college",None)
         city = request.POST.get("city",None)
@@ -117,6 +119,7 @@ class ProfileView(ProfileMixin,View):
         context = super(ProfileView, self).get_context_data(**kwargs)
         context["team"] = self.request.user.profile.team
         context["team_members"] =self.request.user.profile.team.members.all()
+        context["registered_events"]=get_registered_events(self.request.user)
         return context
     
     def get(self,request):

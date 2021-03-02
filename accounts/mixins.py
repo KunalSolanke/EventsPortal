@@ -10,8 +10,8 @@ class ProfileMixin(LoginRequiredMixin) :
         if user.is_authenticated :
             if user.profile.is_profile_complete and user.profile.is_signup_complete :
                 return super().dispatch(request,*args,**kwargs)
-            elif not user.profile.is_signup_complete :
-                return redirect("/accounts/signup/complete")
+            # elif not user.profile.is_signup_complete :
+            #     return redirect("/accounts/signup/complete")
             elif not  user.profile.is_profile_complete:
                 return redirect("/accounts/team/create")
         return super().dispatch(request,*args,**kwargs)

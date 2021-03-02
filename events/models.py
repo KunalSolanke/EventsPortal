@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Event(models.Model) :
-    title = models.CharField(max_length=255,blank=False,null=True)
+    title = models.CharField(max_length=255,blank=False,null=True,unique=True)
     description = models.TextField(blank=True,null=True)
     registration_starts = models.DateField(blank=True,null=True)
     registration_end = models.DateField(blank=True,null=True)
@@ -17,6 +17,7 @@ class Event(models.Model) :
 
 class SubTeam(models.Model) :
     event = models.ForeignKey(Event, related_name="teams_particiaptd", on_delete=models.CASCADE)
+    event_name = models.CharField(max_length=255,blank=False,null=True)
     team = models.ForeignKey("accounts.Team", related_name="subteams", on_delete=models.CASCADE)
     members = models.ManyToManyField("accounts.Profile", related_name="subteams")
     is_approved = models.BooleanField(default=False)

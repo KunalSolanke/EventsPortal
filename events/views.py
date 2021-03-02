@@ -8,6 +8,10 @@ from django.contrib.auth.models import User
 from accounts.mixins import ProfileMixin
 
 
+def get_registered_events(user) :
+    events = Event.objects.filter(teams__in=[user.team]) 
+    return events
+
 class EventsRegisterListView(ProfileMixin,ListView) :
     template_name = "events/register_list.html"
     model = Event
@@ -21,16 +25,20 @@ class EventsRegisterListView(ProfileMixin,ListView) :
         context["upcoming"] =Event.objects.filter(registration_starts__gte = timezone.now().date()).exclude(teams__in=[self.request.user.profile.team]).all()
         return context
 
-class EventRegisterView(ProfileMixin,DetailView) :
-      model = Event
-      template_name = "events/register_teams.html"
+class EventRegisterView(ProfileMixin,View) :
       
       def get_context_data(self, **kwargs):
-          context = super(EventRegisterView, self).get_context_data(**kwargs)
-          context["subteams"] = SubTeam.objects.filter(team=self.request.user.profile.team,event__id=kwargs["object"].id)
-          context["event"]=kwargs["object"]
-          print(kwargs["object"])
+          context={}
+          context["subteams"] = SubTeam.objects.filter(team=self.request.user.profile.team,event_name=kwargs["event_name"])
+          context["registered_events"]=get_registered_events(self.request.user)
           return context
+      
+      def get(self,request,*args,**kwargs) :
+          event_name=kwargs["event_name"]
+          template_name="events/"+event_name+".html"
+          return render(request,template_name,self.get_context_data(**kwargs))
+
+
 
 class AddSubTeamView(ProfileMixin,View) :
     template_name = "events/add_subteam.html"

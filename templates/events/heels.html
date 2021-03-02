@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %} EventsPortal | login
+{% endblock %}
+{% block content %}
+<div class="container-fluid mt-3" style="background-color: black;">
+  <div class="row justify-content-center g-3">
+    <div class="col-lg-8 col-12 col-sm-12 col-md-8 text-white listevents rounded-3">
+
+      <div class="container-fluid">
+        <div class="row justify-content-evenly">
+          <div class="col-6">
+            <p style="font-size: 1.4vw;" class="pt-2">Events</p>
+          </div>
+          <div class="col-6 ms-auto text-end" style="font-size: 1.4vw;" class="pt-2"><a href="#"
+              style="text-decoration: none;">&#10006;</a></div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 eventcard rounded-3">
+            <div class="pt-4 pb-3">
+
+              <div class="container">
+                <div class="row justify-content-evenly">
+                  <div class="col">
+                    <p class="fs-4">Freestyle Online Group Dance Competition</p>
+                  </div>
+                  <div class="col text-end">
+                    <button type="button" class="btn btn-secondary "><a href="#"
+                        class="text-white text-decoration-none">Register Now</a></button>
+                  </div>
+                </div>
+              </div>
+
+              <p class="px-4">
+                “Dance is a way to find yourself and lose yourself at the same time.” A signature event of Alcheringa,
+                Electric heels is a group dance competition, featuring the most talented crews across the nation. Your
+                team, your grooves, your beats, our arena. Are you up for the challenge?"
+              </p>
+
+              <ul>Rules</ul>
+              <ul type="none">
+                <ul type="solid">
+                  <li>There is no registration fee for this event.</li>
+                  <!-- <li></li> -->
+                  <li>Teams consist of a minimum of 5 and a maximum of 25 members.</li>
+                  <li>A minimum of 5 and a maximum of 16 members must be present in the frame at any given moment.</li>
+                  <li>The minimum age limit for this competition is 12 years.</li>
+                  <li>Any pre-recorded or live music can be used for the performance.</li>
+                  <li>Creativity and Innovation will fetch extra points, Innovations such as props fetch extra points.
+                  </li>
+                  <li>Performance duration should not exceed 8 minutes.</li>
+                  <li>You have to submit the Google Drive Link of the video at www.alcheringa.in/registrations/ with
+                    provided access. </li>
+                  <li>The decision taken by the organisers is final and binding for the performers.</li>
+                  <li>Organizers have full authority to disqualify the participation in case of any discrepancy.</li>
+                  <li>Vulgarity of any form will not be tolerated.So if a team feels that any act could be termed as
+                    vulgar, it is best suggested to discuss it to the event organiser.</li>
+                </ul>
+              </ul>
+
+              <!-- <ul>Judging Criteria</ul>
+                      <ul type="none">
+                        <ol>
+                            <li>Story Telling</li>
+                            <li>Creativity and Originality</li>
+                            <li>Screenplay and Actor's performance.</li>
+                            <li>Technical Execution: Camera / Sound / Light / Editing</li>
+                            <li>Overall Impression</li>
+                        </ol>
+                      </ul> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-12 col-sm-12 col-md-6 text-white registeredevents mx-3 rounded-3">
+      <p class="fs-2 pt-2 text-center">Registered Events
+      <div class="row px-3">
+        {% for event in registered_events %}
+        <div class="col-12 registeredevent fs-4 my-2 py-2 rounded-3 class=" fs-4"">
+          {{event.title}}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

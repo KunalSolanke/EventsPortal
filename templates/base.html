@@ -3,21 +3,65 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- CSS only -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-  <!-- JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
-    crossorigin="anonymous"></script>
-  <title>{% block title %} {% endblock %}</title>
+  <title>Alcheringa 2021 | Registrations</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style type="text/scss">
+    .navbar-collapse{
+        float: right;
+        flex-grow: 12;
+      }
+    </style>
 </head>
 
 <body>
+
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand w-50" href="#">
+        <img src="{% static 'images/Alcherlogo.png' %}" title="Alcheringa 2021" class="w-50">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" style="flex-grow: 0;">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-6 md-auto px-2">
+          {% if user.is_authenticated %}
+          <li class="nav-item mx-6" style="color: #FFAED8; float: right; font-size: 1.5vw;">
+            <span>
+              <b>Hey {{user.first_name}} {{user.last_name}} !</b>
+              <br>
+              <a class="nav-link text-white" aria-current="page" href="/accounts/logout"
+                style="font-size: 1.2vw;">Logout</a>
+            </span>
+          </li>
+          {% endif %}
+          <li class="nav-item mx-6">
+            <img src="/media/{{user.profile.profile_image}}" alt="" class="rounded-circle" style="width: 4.5vw;">
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   {% block content %}
 
+
+
+  {% endblock %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  {% block script %}
   {% endblock %}
 </body>
 

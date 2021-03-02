@@ -1,0 +1,48 @@
+body{
+    background: black;
+}
+
+nav{
+    background: #222222;
+}
+
+.listevents, .registeredevents{
+    background: #272727;
+}
+
+.eventcard, .registeredevent{
+    background: #4D4D4D;
+}
+
+.eventcard{
+    border: solid #272727;
+    border-width: 0.5rem;
+}
+
+
+.reelopen:hover{
+    content: url('/static/images/Reelfilled.png');
+}
+
+.soloopen:hover{
+    content: url('/static/images/solofilled.png');
+}
+
+.choiropen:hover{
+    content: url('/static/images/Musicfilled.png');
+}
+.talentopen:hover{
+    content: url('/static/images/AGTfilled.png');
+}
+.heelsopen:hover{
+    content: url('/static/images/heelsFilled.png');
+}
+.novaopen:hover{
+    content: url('/static/images/Vectorfilled.png');
+}
+.dramaopen:hover{
+    content: url('/static/images/Dramafilled.png');
+}
+.rapopen:hover{
+    content: url('/static/images/Rapfilled.png');
+}
