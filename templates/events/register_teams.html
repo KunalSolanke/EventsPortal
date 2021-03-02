@@ -15,7 +15,7 @@
         </ul>
     </div>
 </div>
-<a href="/events/register/{{event.id}}/subteam" class="btn btn-primary" role="button">
+<a href="{% url 'events:add_subteam' event.pk %}" class="btn btn-primary" role="button">
     Add Team
 </a>
 {% endblock %}

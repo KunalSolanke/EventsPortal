@@ -136,6 +136,9 @@ EMAIL_USE_TLS = True
 '''
 
 
+LOGIN_URL = "/accounts/login"
+
+
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',

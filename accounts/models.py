@@ -37,12 +37,9 @@ class Profile(models.Model):
        
         def __str__(self):
                 return self.alcher_id
-        
-        def save(self,*args,**kwargs):
-            if not self.id :
-                alcher_id = generateAlcherId(self.fullname)
-                self.alcher_id = alcher_id 
-            return super(Profile,self).save(*args,**kwargs)            
+
+
+            
 
 class Team(models.Model) :
     leader = models.OneToOneField(User,related_name="team",on_delete=models.CASCADE)
