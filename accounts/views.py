@@ -115,6 +115,7 @@ class TeamCreateView(LoginRequiredMixin,CreateView) :
 
 class ProfileView(ProfileMixin,View):
     template_name = "accounts/profile.html"
+    
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
         context["team"] = self.request.user.profile.team
@@ -124,6 +125,8 @@ class ProfileView(ProfileMixin,View):
     
     def get(self,request):
          return render(request,self.template_name)
+
+
 
 class AddMember(LoginRequiredMixin,View) :
     template_name = "accounts/member.html"
