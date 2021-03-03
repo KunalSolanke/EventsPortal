@@ -1,42 +1,55 @@
 {% extends 'base.html'%} {% block title %} EventsPortal | login{% endblock %}
 {% block content %}
-<form method="POST" action="/accounts/signup/complete/">
-    <!-- Email input -->
-    {% csrf_token %}
-    <div class="form-outline mb-4">
-        <input type="text" id="form1Example1" class="form-control" name='username' />
-        <label class="form-label" for="form1Example1">Username</label>
-    </div>
 
-    <div class="form-outline mb-4">
-        <input type="text" id="form1Example11" class="form-control" name='full_name' />
-        <label class="form-label" for="form1Example11">Full Name</label>
-    </div>
+<div class="container text-white px-5">
+    <br>
+    <h5 class="text-center" style="color: #FFAED8;">Register As A New Team Leader!</h5>
+    <br>
+    <form method="POST" action="/accounts/signup/complete/">
+        <!-- Email input -->
+        {% csrf_token %}
 
-    <div class="form-outline mb-4">
-        <input type="number" id="form1Example12" class="form-control" name='phone' />
-        <label class="form-label" for="form1Example12">Phone</label>
-    </div>
+        <div class="row">
+            <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
+                <label class="form-label" for="form1Example1">Username</label>
+                <input type="text" id="form1Example1" class="form-control bg-dark border-dark text-white" name='username' />
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
+                <label class="form-label" for="form1Example11">Full Name</label>
+                <input type="text" id="form1Example11" class="form-control bg-dark border-dark text-white" name='full_name' />
+            </div>
+            <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
+                <label class="form-label" for="form1Example12">Phone</label>
+                <input type="number" id="form1Example12" class="form-control bg-dark border-dark text-white" name='phone' maxlength="10" minlength="10"/>
+            </div>
+        
+            <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
+                <label class="form-label" for="form1Example13">College</label>
+                <input type="text" id="form1Example13" class="form-control bg-dark border-dark text-white" name='college' />
+            </div>
+        </div>
+        <div class="row">
+            <!-- Password input -->
+            <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
+                <label class="form-label" for="form1Example2">Password</label>
+                <input type="password" id="form1Example2" class="form-control bg-dark border-dark text-white" name='password' />
+            </div>
+        
+            <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
+                <label class="form-label" for="form1Example22">Confirm Password</label>
+                <input type="password" id="form1Example21" class="form-control bg-dark border-dark text-white" name='confirm_password' />
+            </div>
+        </div>
+        <!-- 2 column grid layout for inline styling -->
+    
+        <!-- Submit button -->
+        <br>
+        <button type="submit" class="btn btn-secondary btn-block">Sign up</button>
+    </form>
+</div>
 
-    <div class="form-outline mb-4">
-        <input type="text" id="form1Example13" class="form-control" name='college' />
-        <label class="form-label" for="form1Example13">College</label>
-    </div>
 
-    <!-- Password input -->
-    <div class="form-outline mb-4">
-        <input type="password" id="form1Example2" class="form-control" name='password' />
-        <label class="form-label" for="form1Example2">Password</label>
-    </div>
-
-    <div class="form-outline mb-4">
-        <input type="password" id="form1Example21" class="form-control" name='confirm_password' />
-        <label class="form-label" for="form1Example22">Confirm Password</label>
-    </div>
-
-    <!-- 2 column grid layout for inline styling -->
-
-    <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block">Sign up</button>
-</form>
 {% endblock %}
