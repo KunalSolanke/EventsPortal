@@ -9,8 +9,16 @@ from accounts.mixins import ProfileMixin
 
 
 def get_registered_events(user) :
-    events = Event.objects.filter(teams__in=[user.team]) 
-    return events
+    events = Event.objects.filter(teams__in=[user.team])
+    events_lisr =[]
+    data ={}
+    for event in events.all() :
+        data["event"]=event
+        data["subteam"]=user.team.subteams.filter(event__title=event.title)
+        events_list+=[data]
+        data={}
+
+    return events_list
 
 class EventsRegisterListView(ProfileMixin,ListView) :
     template_name = "events/register_list.html"

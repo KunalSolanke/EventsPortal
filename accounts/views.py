@@ -9,7 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.validators import EmailValidator,RegexValidator
 from django.contrib.auth import update_session_auth_hash
 from events.views import get_registered_events
-
+from django.db import transaction
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -28,6 +30,7 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
 
    def post(self,request,*args,**kwargs) :
         password = request.POST.get("password",None)
+        username = request.POST.get("username",None)
         cnf_password = request.POST.get("confirm_password",None)
         fullName = request.POST.get("full_name",None)
         phone = request.POST.get("phone",None)
@@ -44,6 +47,14 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
             errors["fullName_error"]="Name should not be empty"
         
         try :
+            name_validator(username)
+        except Exception as e :
+            errors["invalid_username_error"]="Name should not be empty"
+        
+        if User.objects.filter(username=username).exists() :
+             errors["form_error"]="Person with same username exists"
+        
+        try :
             name_validator(college)
         except Exception as e :
             errors["college_error"]="college name  should not be empty"
@@ -53,7 +64,7 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         except Exception as e :
             errors["phone_error"]="Must have 10 digits and only digits from 0 to 9  should not"
         
-        
+        print(errors)
         if errors :
             return render(request,self.template_name,errors)
         
@@ -61,9 +72,14 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         user.profile.fullname = fullName
         alcher_id = generateAlcherId(fullName)
         user.profile.alcher_id = alcher_id
-        user.phone = phone
+        user.profile.phone = phone
+        user.profile.colllege = college
         user.profile.gender = gender if gender is not None else "M"
-        user.set_password(password)
+        try : 
+           user.set_password(password)
+        except : 
+           errors["password_error"]="Password should have atleast 8 chars and not similiar to username"
+           return render(request,self.template_name,errors)
         update_session_auth_hash(request,user)
         user.alcher_id = alcher_id
         user.profile.is_signup_complete = True
@@ -73,46 +89,66 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         print(user,user.profile)
         return redirect("/accounts/profile")
 
+
 class TeamCreateView(LoginRequiredMixin,CreateView) :
     model = Team
     template_name ="accounts/team_info.html"
 
     def get(self,request):
          return render(request,self.template_name)
-    
+
+    @transaction.atomic
     def post(self,request,*args,**kwargs) :
-        print(request.POST)
-        name = request.POST.get("team_name",None)
-        college = request.POST.get("college",None)
-        city = request.POST.get("city",None)
-        info = request.POST.get("info",None)
-        
+        body = json.loads(request.body)
+        name = body.get("team_name",None)
+        members = body.get("members",None)
         name_validator = RegexValidator("^(?!\s*$).+")
         errors ={}
-
-        try :
-            name_validator(fullName)
-        except Exception as e :
-            errors["fullName_error"]="Name should not be empty"
+        print(body)
         
         try :
-            name_validator(college)
+            name_validator(name)
         except Exception as e :
-            errors["college_error"]="college should not be empty"
+            errors["team_name_error"]="Name should not be empty"
         
         if Team.objects.filter(team_name=name).exists() :
-            errors["team_name_error"]="college should not be empty"
+            errors["form_error"]="Team with same name exists."
         
-        if errors:
-            return render(request,self.template_name,errors)
+        print(errors)
+        if errors :
+                errors["stat"]=400
+                return JsonResponse(errors)
+        
+    
         
         user=request.user
-        team = Team.objects.create(team_name=name,city=city,leader=request.user,description=info)
+        team = Team.objects.create(team_name=name,leader=request.user)
+        
+        for member in members : 
+            name = member.get('name')
+            phone = member.get("phone")
+            email = member.get("email")
+
+            users = User.objects.filter(email=email)
+            if users.exists() :
+                team.members.add(users[0].profile)
+                continue
+            
+            user = User.objects.create(username=email,email=email)
+            user.profile.phone = phone
+            alcher_id  = generateAlcherId(name)
+            user.profile.alcher_id = alcher_id
+            user.profile.fullname=name
+            user.profile.save()
+            team.members.add(user.profile)
+
         user.profile.is_profile_complete= True
+
         user.profile.team = team
         user.profile.save()
-        return redirect("/accounts/profile/add_member")
-
+        
+        errors["stat"]=200
+        return JsonResponse(errors)
 
 
 class ProfileView(ProfileMixin,View):
@@ -176,7 +212,8 @@ class AddMember(LoginRequiredMixin,View) :
             
             
             if errors :
-                return render(request,self.template_name,errors)
+                errors["stat"]=400
+                return JsonResponse(errors)
 
 
             user = User.objects.create(username=name,email=email)
@@ -186,5 +223,5 @@ class AddMember(LoginRequiredMixin,View) :
             user.profile.team = request.user.team
             user.profile.save()
         
-
-        return redirect("/accounts/profile/add_member")
+        errors["stat"]=200
+        return JsonResponse(errors)
