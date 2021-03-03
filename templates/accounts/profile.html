@@ -10,7 +10,8 @@
             <div class="container-fluid">
                 <p class="fs-2 pt-2">Events</p>
                 <div class="row gx-1">
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 reelcard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 reelcard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded-3 pt-4 pb-1" style="border-radius: 12px;">
                             <a href="/events/register/reels/"><img src="{% static 'images/Reel.png' %}" title="Reels"
                                     class="w-50 reelopen"></a>
@@ -18,7 +19,8 @@
                             <p class="fs-4">Reels</p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 solocard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 solocard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded-3 pt-4 pb-2">
                             <a href="/events/register/guitar/"><img src="{% static 'images/GuitarSolo.png' %}"
                                     title="Guitar Solo" class="w-50 soloopen"></a>
@@ -26,7 +28,8 @@
                             <p class="fs-4 pt-1">Guitar Solo</p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 musiccard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 musiccard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded-3 pt-4 pb-2">
                             <a href="/events/register/choir/"><img src="{% static 'images/Music.png' %}" title="Choir"
                                     class="w-50 choiropen"></a>
@@ -34,7 +37,8 @@
                             <p class="fs-4">Choir</p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 agtcard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 agtcard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded-3 pt-4 pb-2">
                             <a href="/events/register/agt/"><img src="{% static 'images/AGTalent.png' %}"
                                     title="Alcher Got Talent" class="w-50 talentopen"></a>
@@ -47,7 +51,8 @@
                 </div>
 
                 <div class="row gx-1">
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 heelscard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 heelscard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded-3 pt-4">
                             <a href="/events/register/heels/"><img src="{% static 'images/Line.png' %}"
                                     title="Electric Heels" class="w-50 heelsopen"></a>
@@ -55,7 +60,8 @@
                             <p class="fs-4 pt-1">Electric Heels</p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 novacard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 novacard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded-3 pt-4 pb-2">
                             <a href="/events/register/nova/"><img src="{% static 'images/Vector.png' %}"
                                     title="Glamour Nova" class="w-50 novaopen"></a>
@@ -63,7 +69,8 @@
                             <p class="fs-4 pt-3">Glamour Nova</p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 dramacard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 dramacard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded pt-3 pb-1">
                             <a href="/events/register/drama/"><img src="{% static 'images/Drama.png' %}"
                                     title="Xpression" class="w-50 dramaopen"></a>
@@ -71,7 +78,8 @@
                             <p class="fs-4 pt-3">Xpression</p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 rapcard" style="background-color: #3C3748;">
+                    <div class="col-lg-3 col-6 col-sm-6 col-md-6 text-center eventcard rounded-3 rapcard"
+                        style="background-color: #3C3748;">
                         <div class="border border-0 rounded-3 pt-4 pb-1">
                             <a href="/events/register/rap/"><img src="{% static 'images/Rap.png' %}" title="Rap"
                                     class="w-50 rapopen"></a>
@@ -85,22 +93,25 @@
         <div class="col-lg-3 col-12 col-sm-12 col-md-6 text-white registeredevents mx-3 rounded-3">
             <p class="fs-2 pt-2 text-center">Registered Events
             <div class="row px-3">
-                {% for event in registered_events %}
+                {% for data in registered_events %}
                 <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3">
                     <span>
-                        {{event.title}}
-                        <button class="btn btn-secondary py-1" style="float: right;" onclick="displayform(this)">SUBMIT</button>
+                        {{data.event.title}}
+                        <button class="btn btn-secondary py-1" style="float: right;"
+                            onclick="displayform(this)">SUBMIT</button>
                     </span>
-                    <form action="#" method="POST" style="display: none;">
-                        <select class="form-select form-select-sm mt-2 bg-dark text-white border-0" aria-label="Default select example">
-                          <option selected>Select your Team Name</option>
-                          <option value="1">Team One</option>
-                          <option value="2">Team Two</option>
-                          <option value="3">Team Three</option>
+                    <form action="#" method="POST" style="display: none;" id="formrap">
+                        <select class="form-select form-select-sm mt-2 bg-dark text-white border-0"
+                            aria-label="Default select example">
+                            <option selected>Select your Team Name</option>
+                            {% for team in data.subteams %}
+                            <option value="{{id}}">{{team.title}}</option>
+                            {% endfor %}
                         </select>
                         <div class="input-group mt-1">
-                          <input type="url" class="form-control py-0 fs-6 bg-dark text-white border-0" placeholder="Paste the link here" name="submitlink">
-                          <button class="btn btn-secondary py-0" type="button">SUBMIT</button>
+                            <input type="url" class="form-control py-0 fs-6 bg-dark text-white border-0"
+                                placeholder="Paste the link here" name="submitlink">
+                            <button class="btn btn-secondary py-0" type="button">SUBMIT</button>
                         </div>
                     </form>
                 </div>
@@ -111,53 +122,11 @@
 
 </div>
 
-<!-- <form id="form-shower">
-    <select id="myselect">
-      <option value="" selected="selected"></option>
-      <option value="connect">Register New Bot</option>
-      <option value="chat">Send New Chat</option>
-      <option value="edit-bal">Edit Balance</option>
-      <option value="dis">Disable Bot</option>
-      <option value="del">Delete User</option>
-    </select>
-  </form> 
-  <script>
-$("#myselect").on("change", function() {
-$("#" + $(this).val()).show().siblings().hide();
-$('#form-shower').attr('style', 'display:block !important');
-});
-</script> -->
-
-<!-- var array = Object.keys(alluserdata).map(function(k) {
-    return alluserdata[k];
-  });
-  var mainObj = array; -->
 
 <script>
-    function displayform(param){
-        param.style.display="none";
+    function displayform(param) {
+        param.style.display = "none";
         document.getElementById('formrap').style.display = "block";
     }
-
-
-    var globe = {{ registered_events }};
-    // var k = '<tbody>'
-    // for (i = 0; i < mainObj.length; i++) {
-    // var b = i + 1;
-    // k += '<tr>';
-    // k += '<td class="f-w-700">' + b + '</td>';
-    // k += '<td><h5 class="default-text mb-0 f-w-700 f-18">' + mainObj[i]["username"] + '</h5></td>';
-    // k += '<td><span class="badge badge-pill recent-badge f-12">' + mainObj[i]["cash"] + '</span></td>';
-    // k += '<td><h6 class="mb-0">' + mainObj[i]["date"] + '</h6></td>';
-    // k += '<td class="f-w-700">' + mainObj[i]["wins"] + '</td>';
-    // k += '<td class="f-w-700">' + mainObj[i]["losses"] + '</td>';
-    // k += '<td><span class="badge badge-pill recent-badge f-12">' + mainObj[i]["profit"] + '</span></td>';
-    // k += '</tr>';
-    // }
-    // k += '</tbody>';
-    // document.getElementById('UsertableData').innerHTML = k;
-
-    
-
 </script>
 {% endblock %}

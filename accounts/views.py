@@ -162,7 +162,11 @@ class ProfileView(ProfileMixin,View):
         return context
     
     def get(self,request):
-         return render(request,self.template_name)
+        context={}
+        context["team"] = self.request.user.team
+        context["team_members"] =self.request.user.profile.team.members.all()
+        context["registered_events"]=get_registered_events(self.request.user)
+        return render(request,self.template_name,context)
 
 
 

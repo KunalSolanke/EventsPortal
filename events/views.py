@@ -10,11 +10,12 @@ from accounts.mixins import ProfileMixin
 
 def get_registered_events(user) :
     events = Event.objects.filter(teams__in=[user.team])
-    events_lisr =[]
+    print(user.team)
+    events_list =[]
     data ={}
     for event in events.all() :
         data["event"]=event
-        data["subteam"]=user.team.subteams.filter(event__title=event.title)
+        data["subteams"]=user.team.subteams.filter(event__title=event.title)
         events_list+=[data]
         data={}
 

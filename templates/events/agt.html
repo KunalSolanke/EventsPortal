@@ -70,9 +70,26 @@
     <div class="col-lg-3 col-12 col-sm-12 col-md-6 text-white registeredevents mx-3 rounded-3">
       <p class="fs-2 pt-2 text-center">Registered Events
       <div class="row px-3">
-        {% for event in registered_events %}
-        <div class="col-12 registeredevent fs-4 my-2 py-2 rounded-3 class=" fs-4"">
-          {{event.title}}
+        {% for data in registered_events %}
+        <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3">
+          <span>
+            {{data.event.title}}
+            <button class="btn btn-secondary py-1" style="float: right;" onclick="displayform(this)">SUBMIT</button>
+          </span>
+          <form action="#" method="POST" style="display: none;" id="formrap">
+            <select class="form-select form-select-sm mt-2 bg-dark text-white border-0"
+              aria-label="Default select example">
+              <option selected>Select your Team Name</option>
+              {% for team in data.subteams %}
+              <option value="{{id}}">{{team.title}}</option>
+              {% endfor %}
+            </select>
+            <div class="input-group mt-1">
+              <input type="url" class="form-control py-0 fs-6 bg-dark text-white border-0"
+                placeholder="Paste the link here" name="submitlink">
+              <button class="btn btn-secondary py-0" type="button">SUBMIT</button>
+            </div>
+          </form>
         </div>
         {% endfor %}
       </div>
@@ -80,4 +97,12 @@
   </div>
 
 </div>
+
+
+<script>
+  function displayform(param) {
+    param.style.display = "none";
+    document.getElementById('formrap').style.display = "block";
+  }
+</script>
 {% endblock %}
