@@ -9,6 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.validators import EmailValidator,RegexValidator
 from django.contrib.auth import update_session_auth_hash
 from events.views import get_registered_events
+
+
 # Create your views here.
 
 class Login(View) :
