@@ -75,6 +75,7 @@
                 <button type="submit" class="btn btn-secondary px-5">Register</button>
             </center>
 
+
         </form>
         <br><br>
     </div>
@@ -134,7 +135,7 @@
         let email = form.get("email");
         let filter = members.filter(e => e.email == email);
         if (filter.length) {
-            alert("Team member with same email already added")
+            alert(`Team member with same email ${email} already added`)
             return;
         }
         else {
@@ -152,6 +153,27 @@
 
 
     $(".team__data").submit(function sendTeamData(e) {
+        let last_form = new FormData($(".members__wrapper form:last"));
+
+
+        let email = form.get("email");
+        let name = form.get("name");
+        let phone = form.get("phone");
+        if (email && name && phine) {
+            let filter = members.filter(e => e.email == email);
+            if (filter.length) {
+                alert(`Team member with same email ${email} already added`)
+                return;
+            }
+            else {
+                members.push({
+                    email,
+                    name,
+                    phone
+                })
+                return;
+            }
+        }
         console.log("here")
         e.preventDefault();
         let form = new FormData(e.target);
