@@ -11,6 +11,7 @@
                 <div class="col-md-4">
                     <label for="teamName" class="form-label">Team Name</label>
                     <input type="text" class="form-control" id="teamName" name="team_name">
+                    <span style="color:red" class="team_name_error"></span>
                 </div>
             </div>
             <br>
@@ -153,13 +154,12 @@
 
 
     $(".team__data").submit(function sendTeamData(e) {
-        let last_form = new FormData($(".members__wrapper form:last"));
-
-
-        let email = form.get("email");
-        let name = form.get("name");
-        let phone = form.get("phone");
-        if (email && name && phine) {
+        e.preventDefault();
+        let last_form = new FormData($(".members__wrapper form:last")[0]);
+        let email = last_form.get("email");
+        let name = last_form.get("name");
+        let phone = last_form.get("phone");
+        if (email && name && phone) {
             let filter = members.filter(e => e.email == email);
             if (filter.length) {
                 alert(`Team member with same email ${email} already added`)
@@ -171,11 +171,11 @@
                     name,
                     phone
                 })
-                return;
             }
         }
+
+
         console.log("here")
-        e.preventDefault();
         let form = new FormData(e.target);
         team_name = form.get("team_name");
         $.ajax({
@@ -197,7 +197,10 @@
                 console.log(res)
                 if (res["stat"] === 200) {
                     window.location.href = "/accounts/profile"
+                } else {
+                    $(".team_name_error").text(res["team_name_error"] || "");
                 }
+
             }
         })
     })

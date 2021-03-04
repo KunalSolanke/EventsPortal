@@ -1,8 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import pre_save,post_save
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
 
+from django.conf import settings
+from django.db.models import Q
+from django.contrib.auth.models import User
 
 
 def generateAlcherId(fullname):
@@ -69,4 +73,4 @@ def generate_team_id(sender,instance,created,*args,**kwargs) :
 @receiver(post_save,sender=User)
 def create_profile(sender,instance,created,*args,**kwargs) :
     if created :
-        profile ,profile_created= Profile.objects.get_or_create(user=instance)
+        profile ,profile_created= Profile.objects.get_or_create(user=instance,alcher_id=generateAlcherId(instance.username))

@@ -107,10 +107,10 @@ STATIC_ROOT = Path.joinpath(BASE_DIR, 'assets')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path.joinpath(BASE_DIR, 'media')
 
-
 AUTHENTICATION_BACKENDS = [
         'social_core.backends.google.GoogleOAuth2',
-        'django.contrib.auth.backends.AllowAllUsersModelBackend',
+        'accounts.backends.EmailBackend',
+
 ]
 
 
@@ -136,7 +136,7 @@ EMAIL_USE_TLS = True
 '''
 
 
-LOGIN_URL = "/accounts/login"
+LOGIN_REDIRECT_URL = "/accounts/profile"
 
 
 SOCIAL_AUTH_PIPELINE = (
@@ -154,3 +154,4 @@ SOCIAL_AUTH_PIPELINE = (
 
 SECURE_SSL_REDIRECT= False
 LOGOUT_REDIRECT_URL="/accounts/login"
+

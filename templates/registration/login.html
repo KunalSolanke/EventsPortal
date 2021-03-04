@@ -1,36 +1,38 @@
-{% extends 'base.html'%} 
+{% extends 'base.html'%}
 {% block title %} EventsPortal | login{% endblock %}
 {% block content %}
- 
+
 <div class="container mt-4 text-white">
     <h1 style="color: #FFAED8;;">ALCHERINGA 2021</h1>
     <h2>Registration Portal | Login</h2>
     <br><br>
-    
+
     <form method="POST" class="mx-auto">
         {% csrf_token %}
         <!-- Email input -->
         <div class="form-outline mb-4 col-lg-4 col-12 col-sm-12 col-md-4">
             <label class="form-label" for="form1Example1">Email address</label>
-            <input type="email" name="email" id="form1Example1" class="form-control bg-dark border-dark text-white" />
+            <input type="email" name="username" id="form1Example1"
+                class="form-control bg-dark border-dark text-white" />
         </div>
-    
+
         <!-- Password input -->
         <div class="form-outline mb-4 col-lg-4 col-12 col-sm-12 col-md-4">
             <label class="form-label" for="form1Example2">Password</label>
-            <input type="password" name="password" id="form1Example2" class="form-control bg-dark border-dark text-white" />
+            <input type="password" name="password" id="form1Example2"
+                class="form-control bg-dark border-dark text-white" />
         </div>
-    
+
         <!-- 2 column grid layout for inline styling -->
-    
+
         <!-- Submit button -->
         <button type="submit" class="btn btn-secondary btn-block">Sign in</button>
     </form>
-    
+
     <br>
     <span>
         <h5>New User? Login &#8628;</h5>
-        <a href="{% url 'accounts:social:begin' 'google-oauth2' %}" style="color: #FFAED8;">Login with Google+</a> 
+        <a href="{% url 'accounts:social:begin' 'google-oauth2' %}" style="color: #FFAED8;">Login with Google+</a>
     </span>
 </div>
 

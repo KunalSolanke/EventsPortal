@@ -27,7 +27,8 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
    
    def get(self,request):
          return render(request,self.template_name)
-
+   
+   @transaction.atomic
    def post(self,request,*args,**kwargs) :
         password = request.POST.get("password",None)
         username = request.POST.get("username",None)
@@ -41,6 +42,7 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         phone_validator = RegexValidator('^[0-9]{10}$')
         errors ={}
 
+
         try :
             name_validator(fullName)
         except Exception as e :
@@ -52,7 +54,7 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
             errors["invalid_username_error"]="Name should not be empty"
         
         if User.objects.filter(username=username).exists() :
-             errors["form_error"]="Person with same username exists"
+             errors["username_error"]="Person with same username exists"
         
         try :
             name_validator(college)
@@ -65,21 +67,29 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
             errors["phone_error"]="Must have 10 digits and only digits from 0 to 9  should not"
         
         print(errors)
-        if errors :
-            return render(request,self.template_name,errors)
+        if errors : 
+            errors["stat"]=400
+            return JsonResponse(errors)
         
         user = request.user 
         user.profile.fullname = fullName
         alcher_id = generateAlcherId(fullName)
         user.profile.alcher_id = alcher_id
         user.profile.phone = phone
-        user.profile.colllege = college
+        user.profile.college = college
         user.profile.gender = gender if gender is not None else "M"
+        
+        if password != cnf_password :
+            errors["stat"]=400
+            errors["password_error"]="Passwords don't match"
+            return JsonResponse(errors)
+
         try : 
            user.set_password(password)
         except : 
-           errors["password_error"]="Password should have atleast 8 chars and not similiar to username"
-           return render(request,self.template_name,errors)
+            errors["stat"]=400
+            errors["password_error"]="Password should not be similar to username"
+            return JsonResponse(errors)
         update_session_auth_hash(request,user)
         user.alcher_id = alcher_id
         user.profile.is_signup_complete = True
@@ -87,7 +97,9 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         user.save()
         user.profile.save()
         print(user,user.profile)
-        return redirect("/accounts/profile")
+        errors["stat"]=200
+        errors.update({"fullname":fullName,"alcher_id":user.profile.alcher_id})
+        return JsonResponse(errors)
 
 
 class TeamCreateView(LoginRequiredMixin,CreateView) :
@@ -112,7 +124,7 @@ class TeamCreateView(LoginRequiredMixin,CreateView) :
             errors["team_name_error"]="Name should not be empty"
         
         if Team.objects.filter(team_name=name).exists() :
-            errors["form_error"]="Team with same name exists."
+            errors["team_name_error"]="Team with same name exists."
         
         print(errors)
         if errors :
@@ -134,12 +146,12 @@ class TeamCreateView(LoginRequiredMixin,CreateView) :
                 team.members.add(users[0].profile)
                 continue
             
-            user = User.objects.create(username=email,email=email)
-            user.profile.phone = phone
+            member= User.objects.create(username=email,email=email)
+            member.profile.phone = phone
             alcher_id  = generateAlcherId(name)
-            user.profile.alcher_id = alcher_id
-            user.profile.fullname=name
-            user.profile.save()
+            member.profile.alcher_id = alcher_id
+            member.profile.fullname=name
+            member.profile.save()
             team.members.add(user.profile)
 
         user.profile.is_profile_complete= True

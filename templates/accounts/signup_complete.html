@@ -5,18 +5,20 @@
     <br>
     <h5 class="text-center" style="color: #FFAED8;">Register As A New Team Leader!</h5>
     <br>
-    <form method="POST" action="/accounts/signup/complete/">
+    <form class="signup__form">
         <!-- Email input -->
         {% csrf_token %}
-
         <div class="row">
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example1">Username</label>
                 <input type="text" id="form1Example1" class="form-control bg-dark border-dark text-white"
                     name='username' />
+                <span style="color:red" class="username__error"></span>
             </div>
         </div>
+
         <br>
+
         <div class="row">
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example11">Full Name</label>
@@ -40,22 +42,67 @@
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example2">Password</label>
                 <input type="password" id="form1Example2" class="form-control bg-dark border-dark text-white"
-                    name='password' />
+                    name='password' minlength="8" />
             </div>
 
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example22">Confirm Password</label>
                 <input type="password" id="form1Example21" class="form-control bg-dark border-dark text-white"
-                    name='confirm_password' />
+                    name='confirm_password' minlength="8" />
             </div>
+            <span style="color:red" class="password__error"></span>
         </div>
-        <!-- 2 column grid layout for inline styling -->
 
+        <!-- 2 column grid layout for inline styling -->
         <!-- Submit button -->
+
         <br>
         <button type="submit" class="btn btn-secondary btn-block">Sign up</button>
     </form>
+
+
+
 </div>
 
 
+
+
+{% endblock %}
+{% block script %}
+<script>
+    $(".signup__form").submit(function (e) {
+        e.preventDefault();
+        let form = new FormData(this);
+        if (!form.check_validity()) {
+            report_validity();
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/accounts/signup/complete/",
+            contentType: false,
+            cache: false,
+            processData: false,
+            mode: "same-origin",
+            headers: {
+                'X-CSRFToken': $("input[name=csrfmiddlewaretoken]").val(),
+            },
+            data: form,
+            success: function (res) {
+                console.log(res)
+                if (res["stat"] === 200) {
+                    alert(`Greetings from Team Alcheringa\nYou are registered as a leader\nName - ${res["fullname"]}\nAlcher ID = ${res["alcher_id"]}\nYou are requested to take the screenshot of the dialog box.\nYou will be required to submit this as a proof for registration.\n`)
+                    window.location.href = "/accounts/profile"
+                } else {
+                    $(".password__error").text(res["password_error"] || "");
+                    $(".username__error").text(res["username_error"] || "");
+                }
+
+            }
+        })
+
+
+    });
+
+</script>
 {% endblock %}
