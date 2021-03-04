@@ -23,18 +23,18 @@
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example11">Full Name</label>
                 <input type="text" id="form1Example11" class="form-control bg-dark border-dark text-white"
-                    name='full_name' />
+                    name='full_name' required/>
             </div>
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example12">Phone</label>
-                <input type="number" id="form1Example12" class="form-control bg-dark border-dark text-white"
-                    name='phone' maxlength="10" minlength="10" />
+                <input type="tel" id="form1Example12" class="form-control bg-dark border-dark text-white"
+                    name='phone' minlength="10" maxlength="10" required pattern="[0-9]{10}"/>
             </div>
 
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example13">College</label>
                 <input type="text" id="form1Example13" class="form-control bg-dark border-dark text-white"
-                    name='college' />
+                    name='college' required/>
             </div>
         </div>
         <div class="row">
@@ -42,13 +42,13 @@
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example2">Password</label>
                 <input type="password" id="form1Example2" class="form-control bg-dark border-dark text-white"
-                    name='password' minlength="8" />
+                    name='password' minlength="8" required/>
             </div>
 
             <div class="form-outline mb-3 col-lg-4 col-12 col-sm-12 col-md-4">
                 <label class="form-label" for="form1Example22">Confirm Password</label>
                 <input type="password" id="form1Example21" class="form-control bg-dark border-dark text-white"
-                    name='confirm_password' minlength="8" />
+                    name='confirm_password' minlength="8" required/>
             </div>
             <span style="color:red" class="password__error"></span>
         </div>
@@ -73,10 +73,10 @@
     $(".signup__form").submit(function (e) {
         e.preventDefault();
         let form = new FormData(this);
-        if (!form.check_validity()) {
-            report_validity();
-            return;
-        }
+        // if (!form.checkValidity()) {
+        //     reportValidity();
+        //     return;
+        // }
         $.ajax({
             type: "POST",
             url: "/accounts/signup/complete/",

@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <label for="teamName" class="form-label">Team Name</label>
-                    <input type="text" class="form-control" id="teamName" name="team_name">
+                    <input type="text" class="form-control bg-dark text-white" id="teamName" name="team_name">
                     <span style="color:red" class="team_name_error"></span>
                 </div>
             </div>
@@ -19,17 +19,17 @@
             <div class="row">
                 <div class="col-md-4">
                     <label for="teamLeaderName" class="form-label">Team Leader Name</label>
-                    <input type="text" class="form-control" id="teamLeaderName" value="{{user.profile.fullname}}"
+                    <input type="text" class="form-control bg-dark text-white" id="teamLeaderName" value="{{user.profile.fullname}}"
                         disabled>
                 </div>
                 <div class="col-md-4">
                     <label for="teamLeaderNumber" class="form-label">Team Leader Phone No.</label>
-                    <input type="text" class="form-control" id="teamLeaderNumber" value="{{user.profile.phone}}"
+                    <input type="text" class="form-control bg-dark text-white" id="teamLeaderNumber" value="{{user.profile.phone}}"
                         disabled>
                 </div>
                 <div class="col-md-4">
                     <label for="teamLeaderMail" class="form-label">Team Leader's Mail ID</label>
-                    <input type="email" class="form-control" id="teamLeaderMail" value="{{user.email}}" disabled>
+                    <input type="email" class="form-control bg-dark text-white" id="teamLeaderMail" value="{{user.email}}" disabled>
                 </div>
             </div>
             <br />
@@ -83,22 +83,25 @@
 </div>
 {% endblock %}
 {% block script %}
-<script>
+<script type="text/javascript">
     let members = []
+    let leader = "{{ user.email }}"
+
+
     let team_member_form = () => {
         return `<form class="member_form" onsubmit="memberformmsubmit(event)">
                 <div class="row">
                     <div class="col-md-4">
                         <label for="memberName" class="form-label">Member Name</label>
-                        <input type="text" class="form-control" id="memberName" required name="name">
+                        <input type="text" class="form-control bg-dark border-0 text-white" id="memberName" required name="name">
                     </div>
                     <div class="col-md-4">
                         <label for="memberNumber" class="form-label">Member Phone No.</label>
-                        <input type="number" class="form-control" id="memberNumber" required name="phone" min_length=10 max_length=10>
+                        <input type="tel" class="form-control bg-dark border-0 text-white" id="memberNumber" required name="phone" minlength="10" maxlength="10" pattern="[0-9]{10}">
                     </div>
                     <div class="col-md-4">
                         <label for="memberMail" class="form-label">Member's Mail ID</label>
-                        <input type="email" class="form-control" id="memberMail" required name="email">
+                        <input type="email" class="form-control bg-dark border-0 text-white" id="memberMail" required name="email">
                     </div>
                 </div>
                  <br/>
@@ -135,7 +138,7 @@
         let form = new FormData(e.target);
         let email = form.get("email");
         let filter = members.filter(e => e.email == email);
-        if (filter.length) {
+        if (filter.length || email == leader) {
             alert(`Team member with same email ${email} already added`)
             return;
         }
@@ -161,7 +164,7 @@
         let phone = last_form.get("phone");
         if (email && name && phone) {
             let filter = members.filter(e => e.email == email);
-            if (filter.length) {
+            if (filter.length || e.email == leader) {
                 alert(`Team member with same email ${email} already added`)
                 return;
             }
