@@ -71,7 +71,8 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
             errors["stat"]=400
             return JsonResponse(errors)
         
-        user = request.user 
+        user = request.user
+        user.username = username 
         user.profile.fullname = fullName
         alcher_id = generateAlcherId(fullName)
         user.profile.alcher_id = alcher_id
@@ -96,6 +97,7 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         user.profile.is_profile_complete = False
         user.save()
         user.profile.save()
+        
         print(user,user.profile)
         errors["stat"]=200
         errors.update({"fullname":fullName,"alcher_id":user.profile.alcher_id})
