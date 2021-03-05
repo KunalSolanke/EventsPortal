@@ -21,21 +21,13 @@ def generateAlcherId(fullname):
 class Profile(models.Model):
         user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
         alcher_id = models.CharField(max_length=20, unique=True)
-        fullname = models.CharField(max_length=200)
+        first_name = models.CharField(max_length=200)
+        last_name = models.CharField(max_length=200)
         phone = models.CharField(max_length=13,blank=True,null=True)
-        alternate_phone = models.CharField(max_length=13,blank=True,null=True)
         college = models.CharField(max_length=100)
+        email = models.EmailField(max_length=200)
         profile_image = models.ImageField(upload_to ='profile/' ,default="profile/profile.png")
         team = models.ForeignKey("accounts.Team",related_name="members",on_delete=models.CASCADE,null=True)
-        GENDER_CHOICES = [
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ]
-        gender = models.CharField(
-                choices = GENDER_CHOICES,
-                max_length=1,
-                default='M'
-                )
         is_profile_complete = models.BooleanField(default=False) 
         is_signup_complete = models.BooleanField(default=False)
        

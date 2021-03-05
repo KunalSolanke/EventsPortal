@@ -12,7 +12,7 @@ from events.views import get_registered_events
 from django.db import transaction
 import json
 from django.http import JsonResponse
-
+from django.contrib.auth import login, authenticate
 # Create your views here.
 
 class Login(View) :
@@ -21,7 +21,8 @@ class Login(View) :
          return render(request,self.template_name)
 
 
-class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
+# class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
+class UserSignupCompleteView(UpdateView) :
    model = User
    template_name = "accounts/signup_complete.html"
    
@@ -33,20 +34,21 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         password = request.POST.get("password",None)
         username = request.POST.get("username",None)
         cnf_password = request.POST.get("confirm_password",None)
-        fullName = request.POST.get("full_name",None)
+        firstName = request.POST.get("first_name",None)
+        lastName = request.POST.get("last_name",None)
         phone = request.POST.get("phone",None)
-        gender = request.POST.get("gender",None)
         college = request.POST.get("college",None)
-        
+        email = request.POST.get("email", None)
+
         name_validator = RegexValidator("^(?!\s*$).+")
         phone_validator = RegexValidator('^[0-9]{10}$')
         errors ={}
 
 
         try :
-            name_validator(fullName)
+            name_validator(firstName)
         except Exception as e :
-            errors["fullName_error"]="Name should not be empty"
+            errors["fullName_error"]="First Name should not be empty"
         
         try :
             name_validator(username)
@@ -60,7 +62,7 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
             name_validator(college)
         except Exception as e :
             errors["college_error"]="college name  should not be empty"
-        
+
         try :
             phone_validator(phone)
         except Exception as e :
@@ -70,32 +72,48 @@ class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
         if errors : 
             errors["stat"]=400
             return JsonResponse(errors)
-        
-        user = request.user
-        user.username = username 
-        user.profile.fullname = fullName
-        alcher_id = generateAlcherId(fullName)
-        user.profile.alcher_id = alcher_id
-        user.profile.phone = phone
-        user.profile.college = college
-        user.profile.gender = gender if gender is not None else "M"
-        
+
         if password != cnf_password :
             errors["stat"]=400
             errors["password_error"]="Passwords don't match"
             return JsonResponse(errors)
+        
 
+        print("########################################################")
+        user = User.objects.create_user(username=username, email=email, password=password)
+        print(user.username)
+        print(user.email)
+        print(user.password)
+
+        alcher_id = generateAlcherId(firstName)
+        user.alcher_id = alcher_id
+        user.first_name = firstName
+        user.last_name = lastName
+        user.save()
+        user = authenticate(request, username=username, password=password)    
+
+        print("Here")
+        print(user)
         try : 
            user.set_password(password)
         except : 
             errors["stat"]=400
-            errors["password_error"]="Password should not be similar to username"
+            errors["password_error"]="Password should not be similar to username or fullname"
             return JsonResponse(errors)
+            
+        
+        # user = request.user
+        # user = authenticate(request, username)
+        print(user)
+        fullName = firstName + " " + lastName
+        user.profile.fullname = fullName
+        alcher_id = generateAlcherId(firstName)
+        user.profile.alcher_id = alcher_id
+        user.profile.phone = phone
+        user.profile.college = college
         update_session_auth_hash(request,user)
-        user.alcher_id = alcher_id
         user.profile.is_signup_complete = True
         user.profile.is_profile_complete = False
-        user.save()
         user.profile.save()
         
         print(user,user.profile)
@@ -148,7 +166,7 @@ class TeamCreateView(LoginRequiredMixin,CreateView) :
                 team.members.add(users[0].profile)
                 continue
             
-            member= User.objects.create(username=email,email=email)
+            member= User.objects.create(username=name,email=email)
             member.profile.phone = phone
             alcher_id  = generateAlcherId(name)
             member.profile.alcher_id = alcher_id
