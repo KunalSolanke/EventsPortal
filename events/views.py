@@ -9,7 +9,7 @@ from accounts.mixins import ProfileMixin
 from accounts.models import Profile
 from django.db import transaction
 from django.db.models import Exists,OuterRef
-
+from django.http import JsonResponse
 
 
 def get_registered_events(user) :
@@ -57,9 +57,10 @@ class AddSubTeamView(ProfileMixin,View) :
         for member in self.request.user.team.members.exclude(subteams__event__title=event.title).all() :
             context["available_members"].append({
                 "pk":member.pk,
-                "name":member.fullname
+                "name":member.fullname or member.first_name+" "+member.last_name
             })
         context["event_name"] = kwargs["event_name"]
+        context["event"]=event
         return render(request,self.template_name,context=context)
     
     @transaction.atomic
@@ -74,12 +75,15 @@ class AddSubTeamView(ProfileMixin,View) :
         team = SubTeam.objects.create(title=title,description=description,event=event,team=request.user.team)
         
         for id in members :
+            if id=="" :
+                continue
             user = get_object_or_404(Profile,pk=int(id))
             if user in team.members.all()  :
-                raise Exception("A team member in already present")
+                raise Exception("Team member already in other subteam")
+                return JsonResponse({"stat":400,"error":f"Member {user.first_name} {user.last_name} has already been added in other team"})
             team.members.add(user)
         team.save()
-        return redirect("/events/register/"+str(kwargs["event_name"]))
+        return JsonResponse({"stat":200})
     
 
 

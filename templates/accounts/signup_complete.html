@@ -86,10 +86,6 @@
     $(".signup__form").submit(function (e) {
         e.preventDefault();
         let form = new FormData(this);
-        // if (!form.checkValidity()) {
-        //     reportValidity();
-        //     return;
-        // }
         $.ajax({
             type: "POST",
             url: "/accounts/signup/complete/",

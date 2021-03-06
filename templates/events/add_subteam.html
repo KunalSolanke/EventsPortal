@@ -24,19 +24,19 @@
                             {% if member.is_registered %}
                             <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
                                 style="background-color: #3C3748; border: 5px solid #272727;">
-                                {{ member.fullname }}
+                                {% firstof  member.fullname member.first_name %}
                             </div>
                             {% else %}
                             <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
                                 style="background-color: #272727; border: 5px solid #272727;">
-                                {{ member.fullname }}
+                                {% firstof  member.fullname member.first_name %}
                             </div>
                             {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                 </div>
-                <form action="/events/register/{{event_name}}/subteam/" method="POST" id="memberformrap">
+                <form class="create__subteam" id="memberformrap">
                     {% csrf_token %}
                     <div class="row mt-5">
                         <h4>Your sub-teams for the {{ event_name }}</h4>
@@ -50,11 +50,12 @@
                     <br>
                     <div class="row">
                         <div class="">
-                            <label for="memberformrap" class="form-label">Add Member 1</label>
+                            <span style="color: red;" class="error"></span>
+                            <label for="memberformrap" class="form-label">Add Members in subteam</label>
                             <div class="members__select col-lg-3 col-12 col-sm-12 col-md-3">
                                 <select class="form-select form-select-sm bg-dark text-white border-0 mb-2"
                                     aria-label="Default select example" name="members" onchange="changeselect(this)">
-                                    <option selected>Select Team Member</option>
+                                    <option value>Select Team Member</option>
                                     {% for member in available_members %}
                                     <option value="{{member.pk}}">{{member.name}}</option>
                                     {% endfor %}
@@ -97,9 +98,8 @@
 
 
     let available_members = JSON.parse(document.getElementById('available_members').textContent);
-    let mx_ct = "{{event.min_per_team}}";
-    let mn_ct = "{{event.max_per_team}}";
-
+    let mn_ct = parseInt("{{event.min_per_team}}");
+    let mx_ct = parseInt("{{event.max_per_team}}");
     function changeselect(e) {
         let selects = $(".members__select").children();
         let cnt = 0;
@@ -125,7 +125,7 @@
         return `
     <select class="form-select form-select-sm bg-dark text-white border-0 mb-2" name="members"
                                     aria-label="Default select example" onchange="changeselect(this)">
-       <option selected>Select Team Member</option>
+       <option value>Select Team Member</option>
        ${ots}
     </select>
     `
@@ -137,7 +137,7 @@
             return;
         }
 
-        if ($(".members__select").children.length == mx_ct) {
+        if ($(".members__select").children().length == mx_ct) {
             $(".max_count__reached").text("Max no of per team have been selected")
             return;
         }
@@ -151,16 +151,67 @@
         $(".members__select").append(createSelect(available_members));
     })
 
-    // $(".create__subteam").submit(function () {
-    //     e.preventDefault();
-    //     let members = [] ;
-    //     let selects = $(".members__select");
-    //     for (let i = 0; i < selects.length; i++) {
-    //       members.append(selects[i].val()) ;
-    //     }
-    //     let form = $(this) ;
-    //     let formdata = new FormData()
-    // })
+    function checkForDuplicates(array) {
+        let valuesAlreadySeen = []
+
+        for (let i = 0; i < array.length; i++) {
+            let value = array[i]
+            if (valuesAlreadySeen.indexOf(value) !== -1) {
+                return true
+            }
+            valuesAlreadySeen.push(value)
+        }
+        return false
+    }
+
+    $(".create__subteam").submit(function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let members = [];
+        let selects = $(".members__select").children();
+        for (let i = 0; i < selects.length; i++) {
+            if (selects[i].value != "") {
+                members.push(selects[i].value);
+            }
+        }
+        console.log(members)
+        if (mn_ct > members.length) {
+            $(".error").text(`Minimun ${mn_ct} membres are needed to complete a team for this event`);
+            return;
+        }
+        console.log(checkForDuplicates(members))
+        if (checkForDuplicates(members)) {
+            $(".error").text(`Please check if same members have been added twice`);
+            return;
+        }
+
+
+
+        let formdata = new FormData(e.target);
+        let event_name = "{{event_name}}"
+        $.ajax({
+            type: "POST",
+            url: `/events/register/${event_name}/subteam/`,
+            contentType: false,
+            cache: false,
+            processData: false,
+            mode: "same-origin",
+            headers: {
+                'X-CSRFToken': $("input[name=csrfmiddlewaretoken]").val()
+            },
+            data: formdata,
+            success: function (res) {
+                console.log(res)
+                if (res["stat"] === 200) {
+                    location.reload();
+                } else {
+                    $(".error").text(res["error"] || "");
+                }
+
+            }
+        })
+    })
+
 
 </script>
 

@@ -70,9 +70,9 @@
       let form = e.parentNode;
       if (pk) {
         let link = e.options[e.options.selectedIndex].getAttribute("link")
-        if (link) {
+        if (link != "None") {
+          console.log(link)
           let inp = e.parentNode.lastElementChild.firstElementChild;
-
           inp.setAttribute("value", link)
 
         }
