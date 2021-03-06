@@ -19,17 +19,18 @@
             <div class="row">
                 <div class="col-md-4">
                     <label for="teamLeaderName" class="form-label">Team Leader Name</label>
-                    <input type="text" class="form-control bg-dark text-white" id="teamLeaderName" value="{{user.profile.fullname}}"
-                        disabled>
+                    <input type="text" class="form-control bg-dark text-white" id="teamLeaderName"
+                        value="{{user.profile.fullname}}" disabled>
                 </div>
                 <div class="col-md-4">
                     <label for="teamLeaderNumber" class="form-label">Team Leader Phone No.</label>
-                    <input type="text" class="form-control bg-dark text-white" id="teamLeaderNumber" value="{{user.profile.phone}}"
-                        disabled>
+                    <input type="text" class="form-control bg-dark text-white" id="teamLeaderNumber"
+                        value="{{user.profile.phone}}" disabled>
                 </div>
                 <div class="col-md-4">
                     <label for="teamLeaderMail" class="form-label">Team Leader's Mail ID</label>
-                    <input type="email" class="form-control bg-dark text-white" id="teamLeaderMail" value="{{user.email}}" disabled>
+                    <input type="email" class="form-control bg-dark text-white" id="teamLeaderMail"
+                        value="{{user.email}}" disabled>
                 </div>
             </div>
             <br />
@@ -202,6 +203,7 @@
                     window.location.href = "/accounts/profile"
                 } else {
                     $(".team_name_error").text(res["team_name_error"] || "");
+                    members.pop()
                 }
 
             }

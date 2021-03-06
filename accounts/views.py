@@ -13,6 +13,7 @@ from django.db import transaction
 import json
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
+from django.db.models import Q
 # Create your views here.
 
 
@@ -53,6 +54,9 @@ class UserSignupCompleteView(UpdateView) :
         if User.objects.filter(username=username).exists() :
              errors["username_error"]="Person with same username exists"
         
+        if User.objects.filter(email=email).exists() :
+             errors["email_error"]="Person with same email exists"
+        
         try :
             name_validator(college)
         except Exception as e :
@@ -63,23 +67,30 @@ class UserSignupCompleteView(UpdateView) :
         except Exception as e :
             errors["phone_error"]="Must have 10 digits and only digits from 0 to 9  should not"
         
-        print(errors)
-        if errors : 
-            errors["stat"]=400
-            return JsonResponse(errors)
+       
 
         if password != cnf_password :
             errors["stat"]=400
             errors["password_error"]="Passwords don't match"
+        
+        if errors : 
+            errors["stat"]=400
             return JsonResponse(errors)
         
+        user = User.objects.create_user(username=username, email=email)
 
-        print("########################################################")
-        user = User.objects.create_user(username=username, email=email, password=password)
-        print(user.username)
-        print(user.email)
-        print(user.password)
-
+        try : 
+           user.set_password(password)
+        except : 
+            user.delete()
+            errors["stat"]=400
+            errors["password_error"]="Password should not be similar to username or fullname"
+            return JsonResponse(errors)
+    
+        if errors : 
+            errors["stat"]=400
+            return JsonResponse(errors)
+        
         alcher_id = generateAlcherId(firstName)
         user.alcher_id = alcher_id
         user.first_name = firstName
@@ -87,31 +98,18 @@ class UserSignupCompleteView(UpdateView) :
         user.save()
         user = authenticate(request, username=username, password=password)    
 
-        print("Here")
-        print(user)
-        try : 
-           user.set_password(password)
-        except : 
-            errors["stat"]=400
-            errors["password_error"]="Password should not be similar to username or fullname"
-            return JsonResponse(errors)
-            
-        
-        # user = request.user
-        # user = authenticate(request, username)
-        print(user)
         fullName = firstName + " " + lastName
         user.profile.fullname = fullName
         alcher_id = generateAlcherId(firstName)
         user.profile.alcher_id = alcher_id
         user.profile.phone = phone
         user.profile.college = college
-        update_session_auth_hash(request,user)
         user.profile.is_signup_complete = True
         user.profile.is_profile_complete = False
         user.profile.save()
         
-        print(user,user.profile)
+        update_session_auth_hash(request,user)
+
         errors["stat"]=200
         errors.update({"fullname":fullName,"alcher_id":user.profile.alcher_id})
         return JsonResponse(errors)
@@ -161,7 +159,7 @@ class TeamCreateView(LoginRequiredMixin,CreateView) :
                 team.members.add(users[0].profile)
                 continue
             
-            member= User.objects.create(username=name,email=email)
+            member= User.objects.create(username=email,email=email)
             member.profile.phone = phone
             alcher_id  = generateAlcherId(name)
             member.profile.alcher_id = alcher_id
