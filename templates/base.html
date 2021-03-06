@@ -63,6 +63,31 @@
 
   {% block script %}
   {% endblock %}
+  <script>
+
+    function handleSubmitEventSelect(e) {
+      let pk = e.value;
+      let form = e.parentNode;
+      if (pk) {
+        let link = e.options[e.options.selectedIndex].getAttribute("link")
+        if (link) {
+          let inp = e.parentNode.lastElementChild.firstElementChild;
+
+          inp.setAttribute("value", link)
+
+        }
+        form.setAttribute("action", `/events/submission/subteam/${pk}/`);
+      }
+    }
+  </script>
+
+  <script>
+    $(".registered_events_submit").click(function (e) {
+      let form = $(this).parent().parent().children().last()[0];
+      e.target.style.display = "none";
+      form.style.display = "block";
+    })
+  </script>
 </body>
 
 </html>

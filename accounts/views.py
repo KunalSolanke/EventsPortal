@@ -15,11 +15,6 @@ from django.http import JsonResponse
 
 # Create your views here.
 
-class Login(View) :
-    template_name = "accounts/login.html"
-    def get(self,request):
-         return render(request,self.template_name)
-
 
 class UserSignupCompleteView(LoginRequiredMixin,UpdateView) :
    model = User
@@ -154,7 +149,7 @@ class TeamCreateView(LoginRequiredMixin,CreateView) :
             member.profile.alcher_id = alcher_id
             member.profile.fullname=name
             member.profile.save()
-            team.members.add(user.profile)
+            team.members.add(member.profile)
 
         user.profile.is_profile_complete= True
 
@@ -178,68 +173,68 @@ class ProfileView(ProfileMixin,View):
     def get(self,request):
         context={}
         context["team"] = self.request.user.team
-        context["team_members"] =self.request.user.profile.team.members.all()
+        context["team_members"] =self.request.user.team.members.all()
         context["registered_events"]=get_registered_events(self.request.user)
         return render(request,self.template_name,context)
 
 
 
-class AddMember(LoginRequiredMixin,View) :
-    template_name = "accounts/member.html"
+# class AddMember(LoginRequiredMixin,View) :
+#     template_name = "accounts/member.html"
     
-    def get(self,request,*arg,**kwargs):
-        return render(request,self.template_name)
+#     def get(self,request,*arg,**kwargs):
+#         return render(request,self.template_name)
 
-    def post(self,request,*args,**kwargs) :
-        alcher_id = request.POST.get("alcher_id",None)
-        if alcher_id :
+#     def post(self,request,*args,**kwargs) :
+#         alcher_id = request.POST.get("alcher_id",None)
+#         if alcher_id :
 
-            if not Profile.objects.filter(alcher_id=alcher_id).exists() :
-                errors["alcher_id_error"]="No alcher id found"
+#             if not Profile.objects.filter(alcher_id=alcher_id).exists() :
+#                 errors["alcher_id_error"]="No alcher id found"
 
-            if errors :
-                return render(request,self.template_name,errors)
+#             if errors :
+#                 return render(request,self.template_name,errors)
             
-            profile = get_object_or_404(Profile,alcher_id)
-            request.user.team.add(Profile,alcher_id=alcher_id)
-            request.user.team.save()
-        else :
-            name = request.POST.get("username",None)
-            email = request.POST.get("email",None)
-            phone = request.POST.get("phone",None)
-            gender = request.POST.get("gender",None)
+#             profile = get_object_or_404(Profile,alcher_id)
+#             request.user.team.add(Profile,alcher_id=alcher_id)
+#             request.user.team.save()
+#         else :
+#             name = request.POST.get("username",None)
+#             email = request.POST.get("email",None)
+#             phone = request.POST.get("phone",None)
+#             gender = request.POST.get("gender",None)
             
-            name_validator = RegexValidator("^(?!\s*$).+")
-            phone_validator = RegexValidator('^[0-9]{10}$')
-            errors ={}
+#             name_validator = RegexValidator("^(?!\s*$).+")
+#             phone_validator = RegexValidator('^[0-9]{10}$')
+#             errors ={}
 
-            try :
-                name_validator(fullName)
-            except Exception as e :
-                errors["fullName_error"]="Name should not be empty"
+#             try :
+#                 name_validator(fullName)
+#             except Exception as e :
+#                 errors["fullName_error"]="Name should not be empty"
             
-            try :
-                EmailValidator(email)
-            except Exception as e :
-                errors["email_error"]="Must have 10 digits and only digits from 0 to 9  should not"
+#             try :
+#                 EmailValidator(email)
+#             except Exception as e :
+#                 errors["email_error"]="Must have 10 digits and only digits from 0 to 9  should not"
             
-            try :
-                phone_validator(phone)
-            except Exception as e :
-                errors["phone_error"]="Must have 10 digits and only digits from 0 to 9  should not"
+#             try :
+#                 phone_validator(phone)
+#             except Exception as e :
+#                 errors["phone_error"]="Must have 10 digits and only digits from 0 to 9  should not"
             
             
-            if errors :
-                errors["stat"]=400
-                return JsonResponse(errors)
+#             if errors :
+#                 errors["stat"]=400
+#                 return JsonResponse(errors)
 
 
-            user = User.objects.create(username=name,email=email)
-            user.profile.phone = phone
-            user.profile.is_profile_complete = True
-            user.profile.gender = gender
-            user.profile.team = request.user.team
-            user.profile.save()
+#             user = User.objects.create(username=name,email=email)
+#             user.profile.phone = phone
+#             user.profile.is_profile_complete = True
+#             user.profile.gender = gender
+#             user.profile.team = request.user.team
+#             user.profile.save()
         
-        errors["stat"]=200
-        return JsonResponse(errors)
+#         errors["stat"]=200
+#         return JsonResponse(errors)

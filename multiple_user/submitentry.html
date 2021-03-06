@@ -1,170 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <title>Alcheringa 2021 | Registrations</title>
-    <link rel="stylesheet" href="style.css">
-    <style type="text/scss">
-      .navbar-collapse{
-        float: right;
-        flex-grow: 12;
-      }
-    </style>
-</head>
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
-          <a class="navbar-brand w-50" href="#">
-            <img src="Alcherlogo.png" title="Alcheringa 2021" class="w-50">
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent" style="flex-grow: 0;">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-6 md-auto px-2">
-              <li class="nav-item mx-6" style="color: #FFAED8; float: right; font-size: 1.5vw;">
-                <span>
-                  <b>Hey Mitesh!</b>
-                  <br>
-                  <a class="nav-link text-white" aria-current="page" href="#" style="font-size: 1.2vw;">Logout</a>
-                </span>
-              </li>
-              <li class="nav-item mx-6">
-                <img src=Ellipse1.png alt="" class="rounded-circle" style="width: 4.5vw;">
-              </li>
-              
-            </ul>
+<div class="container-fluid mt-3" style="background-color: black;">
+  <div class="row justify-content-center g-3">
+    <div class="col-lg-8 col-12 col-sm-12 col-md-8 text-white listevents rounded-3">
+      <div class="container mt-3 mx-2">
+        <div class="row">
+          <div class="col-8">
+            <h3 style="color: #FFAED8;">Event - {{ event.title }}</h3>
+            <p>Choose your Sub-Teams from your members for the {{ event.title }}</p>
           </div>
         </div>
-      </nav>
-
-      <div class="container-fluid mt-3" style="background-color: black;">
-          <div class="row justify-content-center g-3">
-            <div class="col-lg-8 col-12 col-sm-12 col-md-8 text-white listevents rounded-3">
-                <div class="container mt-3 mx-2">
-                    <div class="row">
-                        <div class="col-8">
-                            <h3 style="color: #FFAED8;">Event - {{ event.title }}</h3>
-                            <p>Choose your Sub-Teams from your members for the {{ event.title }}</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <h4>Your Team Members</h4>
-                      <p>All members are placed in sub-teams.</p>
-                      <div class="container">
-                        <div class="row text-center gy-2 gx-1">
-                          <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6" style="background-color: #3C3748; border: 5px solid #272727;">
-                            Kunal Solanke
-                          </div>
-                          <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6" style="background-color: #3C3748; border: 5px solid #272727;">
-                            Kunal Solanke
-                          </div>
-                          <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6" style="background-color: #3C3748; border: 5px solid #272727;">
-                            Kunal Solanke
-                          </div>
-                          <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6" style="border: 5px solid #272727;">
-                            Kunal Solanke
-                          </div>
-                          <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6" style="background-color: #3C3748; border: 5px solid #272727;">
-                            Kunal Solanke
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row mt-5">
-                      <h4>Your sub-teams for the {{ event.title }}</h4>
-                      <br>
-                      <div class="col-lg-4 col-12 col-sm-12 col-md-4 fy-1">
-                        <label for="subteam" class="form-label">Enter Sub-Team Title</label>
-                        <input type="text" id="subteam" class="form-control text-white border-0" style="background-color: #3C3748;">
-                      </div>
-                    </div>
-                      <br>
-                      <div class="row">
-                        <div class="col-lg-3 col-12 col-sm-12 col-md-3">
-                          <label for="memberformrap" class="form-label">Add Member 1</label>
-                          <form action="#" method="POST" id="memberformrap">
-                            <select class="form-select form-select-sm bg-dark text-white border-0" aria-label="Default select example">
-                              <option selected>Select Team Member</option>
-                              <option value="1">Mem One</option>
-                              <option value="2">Mem Two</option>
-                              <option value="3">Mem Three</option>
-                            </select>
-                            <button class="btn btn-secondary py-0" type="button"> + Add Member</button>
-                            <br><br>
-                            <button class="btn btn-secondary py-0" type="button">SUBMIT TEAM</button>
-                          </form>
-                        </div>
-                      </div>
-                      <br><br>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-12 col-sm-12 col-md-6 text-white registeredevents mx-3 rounded-3">
-              <p class="fs-2 pt-2 text-center">
-                Registered Events
-              </p>
-              <p style="color: #FFAED8; margin-top: -20px;" class="text-center">Submit your entry for the registered events</p>
-              <div class="row px-3">
-                <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
-                  <span>
-                    Choir
-                    <button style="float: right;" class="btn btn-secondary py-1">SUBMIT</button>
-                  </span>
-                </div>
-                <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
-                  <span>
-                    Rap 
-                    <button style="float: right;" class="btn btn-secondary py-1" onclick="displayform(this)">SUBMIT</button>
-                    <!-- onclick="displayform(this)" -->
-                    <!-- This button toggles the below form -->
-                  </span>
-                  <br>
-                  <form action="#" method="POST" id="formrap" style="display: none;">
-                    <select class="form-select form-select-sm mt-2 bg-dark text-white border-0" aria-label="Default select example">
-                      <option selected>Select your Team Name</option>
-                      <option value="1">Team One</option>
-                      <option value="2">Team Two</option>
-                      <option value="3">Team Three</option>
-                    </select>
-                    <div class="input-group mt-1">
-                      <input type="url" class="form-control py-0 fs-6 bg-dark text-white border-0" placeholder="Paste the link here" name="submitlink">
-                      <button class="btn btn-secondary py-0" type="button">SUBMIT</button>
-                    </div>
-                  </form>
-                </div>
-                <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
-                  <span>
-                    Xpression
-                    <button style="float: right;" class="btn btn-secondary py-1">SUBMIT</button>
-                  </span>
-                </div>
-                <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
-                  <span>
-                    Glamour Nova
-                    <button style="float: right;" class="btn btn-secondary py-1">SUBMIT</button>
-                  </span>
-                </div>
+        <br>
+        <div class="row">
+          <h4>Your Team Members</h4>
+          <p>All members are placed in sub-teams.</p>
+          <div class="container">
+            <div class="row text-center gy-2 gx-1">
+              <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
+                style="background-color: #3C3748; border: 5px solid #272727;">
+                Kunal Solanke
+              </div>
+              <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
+                style="background-color: #3C3748; border: 5px solid #272727;">
+                Kunal Solanke
+              </div>
+              <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
+                style="background-color: #3C3748; border: 5px solid #272727;">
+                Kunal Solanke
+              </div>
+              <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6" style="border: 5px solid #272727;">
+                Kunal Solanke
+              </div>
+              <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
+                style="background-color: #3C3748; border: 5px solid #272727;">
+                Kunal Solanke
               </div>
             </div>
           </div>
-        
+        </div>
+        <form action="#" method="POST" id="memberformrap"></form>
+        <div class="row mt-5">
+          <h4>Your sub-teams for the {{ event.title }}</h4>
+          <br>
+          <div class="col-lg-4 col-12 col-sm-12 col-md-4 fy-1">
+            <label for="subteam" class="form-label">Enter Sub-Team Title</label>
+            <input type="text" id="subteam" class="form-control text-white border-0" style="background-color: #3C3748;">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-lg-3 col-12 col-sm-12 col-md-3">
+            <label for="memberformrap" class="form-label">Add Member 1</label>
+
+            <select class="form-select form-select-sm bg-dark text-white border-0" aria-label="Default select example">
+              <option selected>Select Team Member</option>
+              <option value="1">Mem One</option>
+              <option value="2">Mem Two</option>
+              <option value="3">Mem Three</option>
+            </select>
+            <button class="btn btn-secondary py-0" type="button"> + Add Member</button>
+            <br><br>
+          </div>
+        </div>
+        <button class="btn btn-secondary py-0" type="button">SUBMIT TEAM</button>
+        </form>
+        <br><br>
       </div>
-      <script>
-        function displayform(param) {
-          param.style.display="none";
-          document.getElementById('formrap').style.display = "block";
-        }
-      </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-</body>
-</html>
+    </div>
+
+    <div class="col-lg-3 col-12 col-sm-12 col-md-6 text-white registeredevents mx-3 rounded-3">
+      <p class="fs-2 pt-2 text-center">
+        Registered Events
+      </p>
+      <p style="color: #FFAED8; margin-top: -20px;" class="text-center">Submit your entry for the registered events</p>
+      <div class="row px-3">
+        <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
+          <span>
+            Choir
+            <button style="float: right;" class="btn btn-secondary py-1">SUBMIT</button>
+          </span>
+        </div>
+        <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
+          <span>
+            Rap
+            <button style="float: right;" class="btn btn-secondary py-1" onclick="displayform(this)">SUBMIT</button>
+            <!-- onclick="displayform(this)" -->
+            <!-- This button toggles the below form -->
+          </span>
+          <br>
+          <form action="#" method="POST" id="formrap" style="display: none;">
+            <select class="form-select form-select-sm mt-2 bg-dark text-white border-0"
+              aria-label="Default select example">
+              <option selected>Select your Team Name</option>
+              <option value="1">Team One</option>
+              <option value="2">Team Two</option>
+              <option value="3">Team Three</option>
+            </select>
+            <div class="input-group mt-1">
+              <input type="url" class="form-control py-0 fs-6 bg-dark text-white border-0"
+                placeholder="Paste the link here" name="submitlink">
+              <button class="btn btn-secondary py-0" type="button">SUBMIT</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
+          <span>
+            Xpression
+            <button style="float: right;" class="btn btn-secondary py-1">SUBMIT</button>
+          </span>
+        </div>
+        <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3" style="background-color: #3C3748;">
+          <span>
+            Glamour Nova
+            <button style="float: right;" class="btn btn-secondary py-1">SUBMIT</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  function displayform(param) {
+    param.style.display = "none";
+    document.getElementById('formrap').style.display = "block";
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
 
 <!-- Greetings from Team Alcheringa
 Your event registration for the event {{ event.title }} has been successfully completed

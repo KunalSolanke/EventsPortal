@@ -26,7 +26,6 @@ class Profile(models.Model):
         alternate_phone = models.CharField(max_length=13,blank=True,null=True)
         college = models.CharField(max_length=100)
         profile_image = models.ImageField(upload_to ='profile/' ,default="profile/profile.png")
-        team = models.ForeignKey("accounts.Team",related_name="members",on_delete=models.CASCADE,null=True)
         GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -52,6 +51,7 @@ class Team(models.Model) :
     city = models.CharField(max_length=255,blank=True)
     state = models.CharField(max_length=255,blank=True)
     description = models.TextField(blank=True)
+    members = models.ManyToManyField('accounts.Profile',related_name="teams")
     
 
 def generateTeamId(name):

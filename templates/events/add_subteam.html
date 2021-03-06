@@ -2,29 +2,166 @@
 {% block title %} EventsPortal | login
 {% endblock %}
 {% block content %}
-<form method="POST" action="{% url 'events:add_subteam' event.pk %}">
-    <!-- Email input -->
-    {% csrf_token %}
-    <div class="form-outline mb-4">
-        <input type="text" name="email" id="form1Example1" class="form-control" name="title" />
-        <label class=" form-label" for="form1Example1">Title</label>
-    </div>
+<div class="container-fluid mt-3" style="background-color: black;">
+    <div class="row justify-content-center g-3">
+        <div class="col-lg-8 col-12 col-sm-12 col-md-8 text-white listevents rounded-3">
+            <div class="container mt-3 mx-2">
+                <div class="row">
+                    <div class="col-8">
+                        <h3 style="color: #FFAED8;">Event - {{ event_name }}</h3>
+                        <p>Choose your Sub-Teams from your members for the {{ event.title }}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <h4>Your Team Members</h4>
+                    {% if not available_members|length %}
+                    <p>All members are placed in sub-teams.</p>
+                    {% endif %}
+                    <div class="container">
+                        <div class="row text-center gy-2 gx-1">
+                            {% for member in team_members %}
+                            {% if member.is_registered %}
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
+                                style="background-color: #3C3748; border: 5px solid #272727;">
+                                {{ member.fullname }}
+                            </div>
+                            {% else %}
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4 py-auto fs-6"
+                                style="background-color: #272727; border: 5px solid #272727;">
+                                {{ member.fullname }}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <form action="/events/register/{{event_name}}/subteam/" method="POST" id="memberformrap">
+                    {% csrf_token %}
+                    <div class="row mt-5">
+                        <h4>Your sub-teams for the {{ event_name }}</h4>
+                        <br>
+                        <div class="col-lg-4 col-12 col-sm-12 col-md-4 fy-1">
+                            <label for="subteam" class="form-label">Enter Sub-Team Title</label>
+                            <input type="text" id="subteam" class="form-control text-white border-0" name="title"
+                                style="background-color: #3C3748;" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="">
+                            <label for="memberformrap" class="form-label">Add Member 1</label>
+                            <div class="members__select col-lg-3 col-12 col-sm-12 col-md-3">
+                                <select class="form-select form-select-sm bg-dark text-white border-0 mb-2"
+                                    aria-label="Default select example" name="members" onchange="changeselect(this)">
+                                    <option selected>Select Team Member</option>
+                                    {% for member in available_members %}
+                                    <option value="{{member.pk}}">{{member.name}}</option>
+                                    {% endfor %}
 
-    <!-- Password input -->
-    <div class="form-outline mb-4">
-        <input type="text" name="password" id="form1Example2" class="form-control" name="description" />
-        <label class="form-label" for="form1Example2">Description</label>
-    </div>
-    Add member
-    <select class="form-select form-select-sm" multiple aria-label=".form-select-sm example" name="members">
+                                </select>
+                            </div>
+                            <button class="btn btn-secondary py-0 add__member" type="button"> + Add
+                                Member</button>
 
-        {% for member in available_members %}
-        <option value="{{member.id}}">{{member.fullname}}</option>
-        {% endfor %}
+                            <br><br>
+                            <span style="color: red;" class="max_count__reached"></span>
+                            <span style="color: red;" class="already__select"></span>
+                            <span style="color: red;" class="invalid__select"></span>
+                            <span style="color: red;" class="all__select"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary py-0" type="submit">SUBMIT TEAM</button>
+                </form>
+                <br><br>
+            </div>
+        </div>
+
+        {% include 'events/registered_events.html' %}
+    </div>
+</div>
+
+{{ available_members|json_script:"available_members" }}
+
+<script>
+    function displayform(param) {
+        param.style.display = "none";
+        document.getElementById('formrap').style.display = "block";
+    }
+</script>
+
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+
+
+
+    let available_members = JSON.parse(document.getElementById('available_members').textContent);
+    let mx_ct = "{{event.min_per_team}}";
+    let mn_ct = "{{event.max_per_team}}";
+
+    function changeselect(e) {
+        let selects = $(".members__select").children();
+        let cnt = 0;
+        for (let i = 0; i < selects.length; i++) {
+            if (e.value != "Select Team Member" && selects[i].value == e.value) {
+                cnt++;
+                if (cnt == 2) {
+                    $(".already__select").text("This member has already been selecred");
+                    return;
+                }
+            }
+        }
+    }
+
+    function opts(array) {
+        return array.map(e => {
+            return `<option value=${e.pk}>${e.name}</option>`
+        }).join("")
+    }
+
+    function createSelect(array) {
+        let ots = opts(array);
+        return `
+    <select class="form-select form-select-sm bg-dark text-white border-0 mb-2" name="members"
+                                    aria-label="Default select example" onchange="changeselect(this)">
+       <option selected>Select Team Member</option>
+       ${ots}
     </select>
-    <!-- 2 column grid layout for inline styling -->
+    `
+    }
 
-    <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block">Add team</button>
-</form>
+    $(".add__member").click(function () {
+        if ($(".members__select select:last").val() == "Select Team Member") {
+            $(".invalid__select").text("Please select from given options");
+            return;
+        }
+
+        if ($(".members__select").children.length == mx_ct) {
+            $(".max_count__reached").text("Max no of per team have been selected")
+            return;
+        }
+
+        member = $(".members__select select:last").val();
+        available_members = available_members.filter(e => e.pk != member);
+        if (available_members.length == 0) {
+            $(".all__select").text("No members remaining to select");
+            return;
+        }
+        $(".members__select").append(createSelect(available_members));
+    })
+
+    // $(".create__subteam").submit(function () {
+    //     e.preventDefault();
+    //     let members = [] ;
+    //     let selects = $(".members__select");
+    //     for (let i = 0; i < selects.length; i++) {
+    //       members.append(selects[i].val()) ;
+    //     }
+    //     let form = $(this) ;
+    //     let formdata = new FormData()
+    // })
+
+</script>
+
 {% endblock %}

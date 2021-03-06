@@ -25,7 +25,7 @@
                     <p class="fs-4">Online Multi Talent Solo Competiton</p>
                   </div>
                   <div class="col text-end">
-                    <button type="button" class="btn btn-secondary "><a href="#"
+                    <button type="button" class="btn btn-secondary "><a href="/events/register/{{event_name}}/subteam"
                         class="text-white text-decoration-none">Registrations will open soon.</a></button>
                   </div>
                 </div>
@@ -67,42 +67,8 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-3 col-12 col-sm-12 col-md-6 text-white registeredevents mx-3 rounded-3">
-      <p class="fs-4 pt-5 text-center">Registrations for the events will open shortly.
-      <div class="row px-3">
-        {% for data in registered_events %}
-        <div class="col-12 registeredevent fs-5 my-2 py-2 rounded-3">
-          <span>
-            {{data.event.title}}
-            <button class="btn btn-secondary py-1" style="float: right;" onclick="displayform(this)">SUBMIT</button>
-          </span>
-          <form action="#" method="POST" style="display: none;" id="formrap">
-            <select class="form-select form-select-sm mt-2 bg-dark text-white border-0"
-              aria-label="Default select example">
-              <option selected>Select your Team Name</option>
-              {% for team in data.subteams %}
-              <option value="{{id}}">{{team.title}}</option>
-              {% endfor %}
-            </select>
-            <div class="input-group mt-1">
-              <input type="url" class="form-control py-0 fs-6 bg-dark text-white border-0"
-                placeholder="Paste the link here" name="submitlink">
-              <button class="btn btn-secondary py-0" type="button">SUBMIT</button>
-            </div>
-          </form>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
+    {% include 'events/registered_events.html' %}
   </div>
-
 </div>
 
-
-<script>
-  function displayform(param) {
-    param.style.display = "none";
-    document.getElementById('formrap').style.display = "block";
-  }
-</script>
 {% endblock %}
